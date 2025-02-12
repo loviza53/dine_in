@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                 ),
               ),
             ),
@@ -68,23 +68,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.only(left: 20, right: 7.5),
                 decoration: BoxDecoration(
-                  color: accentColor.withOpacity(0.2),
+                  color: accentColor.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(50),
                 ),
                 child: Row(
                   children: [
                     Icon(
                       Icons.search_rounded,
-                      color: Colors.black.withOpacity(0.6),
+                      color: Colors.black.withValues(alpha: 0.6),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        'Search in messages',
+                        'Search menu item or specials...',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          color: Colors.black.withOpacity(0.6),
+                          color: Colors.black.withValues(alpha: 0.6),
                         ),
                       ),
                     ),

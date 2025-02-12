@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             height: 60,
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 15),g
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(

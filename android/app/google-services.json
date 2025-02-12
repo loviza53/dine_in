@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "751065510115",
+    "project_id": "dine-in-25028",
+    "storage_bucket": "dine-in-25028.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751065510115:android:646a265d64c6013d6a95d6",
+        "android_client_info": {
+          "package_name": "com.example.dine_in"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7xfb0IAGavS-jqUrWeXtRhbq2nI5YwhI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

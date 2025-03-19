@@ -11,7 +11,15 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  int? totalBill;
+
   final CartController controller = Get.find<CartController>();
+
+  @override
+  void initState() {
+    totalBill = controller.cartItems.map((e) => e['Total Price']).reduce((value, element) => value + element);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,6 +158,79 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                 );
               },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: accentColor.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Subtotal',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "PKR ${totalBill.toString()}",
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Delivery fee',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        'PKR 100',
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Divider(),
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Total',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "${totalBill! + 100}",
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],

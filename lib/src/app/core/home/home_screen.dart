@@ -4,6 +4,7 @@ import 'package:dine_in/src/constants/colors.dart';
 import 'package:dine_in/src/constants/values.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dine_in/src/app/core/setting/setting.dart';
+import 'package:dine_in/src/app/core/item_detail/item_detail.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -152,24 +153,32 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       final itemSnapshot = snapshot.data!.docs[index];
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: secondaryColor,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.coffee_rounded,
-                              size: 80,
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              itemSnapshot['Item Name'],
-                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
-                            ),
-                          ],
+                      return InkWell(
+                        onTap: () => Get.to(() => ItemDetail(
+                              id: itemSnapshot.id,
+                              itemName: itemSnapshot['Item Name'],
+                              price: itemSnapshot['Price'],
+                            )),
+                        borderRadius: BorderRadius.circular(15),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: secondaryColor,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.coffee_rounded,
+                                size: 80,
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                itemSnapshot['Item Name'],
+                                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },

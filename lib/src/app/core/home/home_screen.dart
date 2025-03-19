@@ -194,6 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               id: itemSnapshot.id,
                               itemName: itemSnapshot['Item Name'],
                               price: itemSnapshot['Price'],
+                              category: itemSnapshot['Category'],
                             )),
                         borderRadius: BorderRadius.circular(15),
                         child: Container(

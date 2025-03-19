@@ -12,11 +12,13 @@ class ItemDetail extends StatefulWidget {
     required this.id,
     required this.itemName,
     required this.price,
+    required this.category,
   });
 
   final String id;
   final String itemName;
   final String price;
+  final String category;
 
   @override
   State<ItemDetail> createState() => _ItemDetailState();
@@ -326,6 +328,7 @@ class _ItemDetailState extends State<ItemDetail> {
                   "Sugar": sugar,
                   "Quantity": quantity,
                   "Item Name": widget.itemName,
+                  'Category': widget.category,
                   "Price": widget.price,
                   "Total Price": totalPrice,
                 });

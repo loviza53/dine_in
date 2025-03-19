@@ -84,7 +84,7 @@ class _CartScreenState extends State<CartScreen> {
                               Text(
                                 controller.cartItems[index]['Item Name'],
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 16,
                                 ),
                               ),
                               Text(

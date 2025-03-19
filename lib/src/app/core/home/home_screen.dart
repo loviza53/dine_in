@@ -1,10 +1,11 @@
-import 'package:dine_in/src/app/core/cart/cart_screen.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
 import 'package:dine_in/src/constants/values.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dine_in/src/app/core/setting/setting.dart';
+import 'package:dine_in/src/app/core/cart/cart_screen.dart';
+import 'package:dine_in/src/app/controllers/cart_controller.dart';
 import 'package:dine_in/src/app/core/item_detail/item_detail.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,6 +17,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String category = categories.first;
+
+  final CartController controller = Get.find<CartController>();
 
   final itemCollection = FirebaseFirestore.instance.collection('Items');
 
@@ -48,14 +51,42 @@ class _HomeScreenState extends State<HomeScreen> {
                     size: 30,
                   ),
                 ),
-                Positioned(
-                  right: 0,
-                  child: InkWell(
-                    onTap: () => Get.to(() => const CartScreen()),
-                    borderRadius: BorderRadius.circular(20),
-                    child: Icon(
-                      Icons.shopping_cart_outlined,
-                      size: 30,
+                Obx(
+                  () => Positioned(
+                    right: 0,
+                    child: InkWell(
+                      onTap: () => Get.to(() => const CartScreen()),
+                      borderRadius: BorderRadius.circular(20),
+                      child: Stack(
+                        children: [
+                          Icon(
+                            Icons.shopping_cart_outlined,
+                            size: 30,
+                          ),
+                          if (controller.cartItems.isNotEmpty)
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              child: Container(
+                                height: 18,
+                                width: 18,
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    controller.cartItems.length.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -112,7 +112,7 @@ class _ItemDetailState extends State<ItemDetail> {
                         Container(
                           height: 40,
                           decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.1),
+                            color: accentColor.withValues(alpha: 0.5),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Row(

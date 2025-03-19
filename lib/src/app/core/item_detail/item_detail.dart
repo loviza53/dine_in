@@ -327,7 +327,7 @@ class _ItemDetailState extends State<ItemDetail> {
                   "Quantity": quantity,
                   "Item Name": widget.itemName,
                   "Price": widget.price,
-                  "Total Price": totalPrice.toString(),
+                  "Total Price": totalPrice,
                 });
                 Get.back();
               },

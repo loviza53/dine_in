@@ -1,3 +1,4 @@
+import 'package:dine_in/src/app/core/cart/cart_screen.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
@@ -47,11 +48,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     size: 30,
                   ),
                 ),
-                const Positioned(
+                Positioned(
                   right: 0,
-                  child: Icon(
-                    Icons.shopping_cart_outlined,
-                    size: 30,
+                  child: InkWell(
+                    onTap: () => Get.to(() => const CartScreen()),
+                    borderRadius: BorderRadius.circular(20),
+                    child: Icon(
+                      Icons.shopping_cart_outlined,
+                      size: 30,
+                    ),
                   ),
                 ),
               ],

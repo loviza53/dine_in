@@ -63,115 +63,163 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 5),
-              decoration: BoxDecoration(
-                color: accentColor.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                itemCount: controller.cartItems.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Row(
+          Expanded(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 5),
+                    decoration: BoxDecoration(
+                      color: accentColor.withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      itemCount: controller.cartItems.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "${controller.cartItems[index]['Item Name']} ${controller.cartItems[index]['Size']} ${controller.cartItems[index]['Quantity']}x",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                "PKR ${controller.cartItems[index]['Total Price']}",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: accentColor.withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Column(
                       children: [
-                        Expanded(
-                          child: Text(
-                            "${controller.cartItems[index]['Item Name']} ${controller.cartItems[index]['Size']} ${controller.cartItems[index]['Quantity']}x",
-                            style: TextStyle(
-                              fontSize: 14,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Subtotal',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
                             ),
-                          ),
+                            Text(
+                              "PKR ${totalBill.toString()}",
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          "PKR ${controller.cartItems[index]['Total Price']}",
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Delivery fee',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              'PKR 100',
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Divider(),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Total',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              "PKR ${totalBill! + 100}",
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  );
-                },
-              ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
+                    decoration: BoxDecoration(
+                      color: accentColor.withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.check_box_rounded, color: Colors.brown),
+                        SizedBox(width: 10),
+                        Text("Payment by Cash"),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                color: accentColor.withValues(alpha: 0.5),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Subtotal',
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "PKR ${totalBill.toString()}",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
+            child: InkWell(
+              onTap: () {},
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                height: 45,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: accentColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    'Place Order',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
                   ),
-                  SizedBox(height: 5),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Delivery fee',
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        'PKR 100',
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 5),
-                  Divider(),
-                  SizedBox(height: 5),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Total',
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "PKR ${totalBill! + 100}",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                ),
               ),
             ),
           ),

@@ -90,6 +90,14 @@ class _ItemDetailState extends State<ItemDetail> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(height: 20),
+                    Center(
+                      child: const Icon(
+                        Icons.coffee_rounded,
+                        size: 150,
+                      ),
+                    ),
+                    SizedBox(height: 40),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,

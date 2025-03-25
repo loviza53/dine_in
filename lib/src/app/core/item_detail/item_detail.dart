@@ -26,7 +26,7 @@ class ItemDetail extends StatefulWidget {
 
 class _ItemDetailState extends State<ItemDetail> {
   String size = sizes.first;
-  int sugar = 1;
+  String sugar = '1 Cube';
   int quantity = 1;
   int? totalPrice;
 
@@ -222,33 +222,33 @@ class _ItemDetailState extends State<ItemDetail> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              sugar = 0;
+                              sugar = 'none';
                             });
                           },
                           child: Icon(
                             Icons.cancel_rounded,
                             size: 35,
-                            color: sugar == 0 ? Colors.black : Colors.black.withValues(alpha: 0.2),
+                            color: sugar == 'none' ? Colors.black : Colors.black.withValues(alpha: 0.2),
                           ),
                         ),
                         SizedBox(width: 20),
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              sugar = 1;
+                              sugar = '1 Cube';
                             });
                           },
                           child: Icon(
                             CupertinoIcons.cube_fill,
                             size: 35,
-                            color: sugar == 1 ? Colors.black : Colors.black.withValues(alpha: 0.2),
+                            color: sugar == '1 Cube' ? Colors.black : Colors.black.withValues(alpha: 0.2),
                           ),
                         ),
                         SizedBox(width: 20),
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              sugar = 2;
+                              sugar = '2 Cubes';
                             });
                           },
                           child: Row(
@@ -256,12 +256,12 @@ class _ItemDetailState extends State<ItemDetail> {
                               Icon(
                                 CupertinoIcons.cube_fill,
                                 size: 30,
-                                color: sugar == 2 ? Colors.black : Colors.black.withValues(alpha: 0.2),
+                                color: sugar == '2 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
                               ),
                               Icon(
                                 CupertinoIcons.cube_fill,
                                 size: 30,
-                                color: sugar == 2 ? Colors.black : Colors.black.withValues(alpha: 0.2),
+                                color: sugar == '2 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
                               ),
                             ],
                           ),
@@ -270,7 +270,7 @@ class _ItemDetailState extends State<ItemDetail> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              sugar = 3;
+                              sugar = '3 Cubes';
                             });
                           },
                           child: Row(
@@ -278,17 +278,17 @@ class _ItemDetailState extends State<ItemDetail> {
                               Icon(
                                 CupertinoIcons.cube_fill,
                                 size: 25,
-                                color: sugar == 3 ? Colors.black : Colors.black.withValues(alpha: 0.2),
+                                color: sugar == '3 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
                               ),
                               Icon(
                                 CupertinoIcons.cube_fill,
                                 size: 25,
-                                color: sugar == 3 ? Colors.black : Colors.black.withValues(alpha: 0.2),
+                                color: sugar == '3 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
                               ),
                               Icon(
                                 CupertinoIcons.cube_fill,
                                 size: 25,
-                                color: sugar == 3 ? Colors.black : Colors.black.withValues(alpha: 0.2),
+                                color: sugar == '3 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
                               ),
                             ],
                           ),

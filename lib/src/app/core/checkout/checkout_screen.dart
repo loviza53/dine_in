@@ -1,6 +1,8 @@
+import 'package:dine_in/src/app/core/home/home_screen.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dine_in/src/app/controllers/cart_controller.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -14,6 +16,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   int? totalBill;
 
   final CartController controller = Get.find<CartController>();
+
+  final orderCollection = FirebaseFirestore.instance.collection('Orders');
 
   @override
   void initState() {
@@ -202,7 +206,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
             child: InkWell(
-              onTap: () {},
+              onTap: () async {
+                await orderCollection.add({
+                  'Items': controller.cartItems,
+                }).then((value) {
+                  controller.cartItems.clear();
+                  Get.offAll(() => HomeScreen());
+                });
+              },
               borderRadius: BorderRadius.circular(10),
               child: Container(
                 height: 45,

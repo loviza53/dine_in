@@ -190,17 +190,27 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (context, index) {
                       final itemSnapshot = snapshot.data!.docs[index];
                       return InkWell(
-                        onTap: () => Get.to(() => ItemDetail(
-                              id: itemSnapshot.id,
-                              itemName: itemSnapshot['Item Name'],
-                              price: itemSnapshot['Price'],
-                              category: itemSnapshot['Category'],
-                            )),
+                        onTap: () => Get.to(
+                          () => ItemDetail(
+                            id: itemSnapshot.id,
+                            itemName: itemSnapshot['Item Name'],
+                            price: itemSnapshot['Price'],
+                            category: itemSnapshot['Category'],
+                          ),
+                        ),
                         borderRadius: BorderRadius.circular(15),
                         child: Container(
                           decoration: BoxDecoration(
                             color: secondaryColor,
                             borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.15),
+                                spreadRadius: 0,
+                                blurRadius: 8,
+                                offset: const Offset(4, 4),
+                              ),
+                            ],
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,

@@ -171,73 +171,102 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: StreamBuilder(
-              stream: itemCollection.where('Category', isEqualTo: category).snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisExtent: 200,
-                      crossAxisSpacing: 15,
-                      mainAxisSpacing: 15,
-                    ),
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      final itemSnapshot = snapshot.data!.docs[index];
-                      return InkWell(
-                        onTap: () => Get.to(
-                          () => ItemDetail(
-                            id: itemSnapshot.id,
-                            itemName: itemSnapshot['Item Name'],
-                            price: itemSnapshot['Price'],
-                            category: itemSnapshot['Category'],
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: StreamBuilder(
+                stream: itemCollection.where('Category', isEqualTo: category).snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return GridView.builder(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisExtent: 200,
+                        crossAxisSpacing: 15,
+                        mainAxisSpacing: 15,
+                      ),
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        final itemSnapshot = snapshot.data!.docs[index];
+                        return InkWell(
+                          onTap: () => Get.to(
+                            () => ItemDetail(
+                              id: itemSnapshot.id,
+                              itemName: itemSnapshot['Item Name'],
+                              price: itemSnapshot['Price'],
+                              category: itemSnapshot['Category'],
+                            ),
                           ),
-                        ),
-                        borderRadius: BorderRadius.circular(15),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: secondaryColor,
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.15),
-                                spreadRadius: 0,
-                                blurRadius: 8,
-                                offset: const Offset(4, 4),
-                              ),
-                            ],
+                          borderRadius: BorderRadius.circular(15),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: secondaryColor,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.brown.withValues(alpha: 0.15),
+                                  spreadRadius: 0,
+                                  blurRadius: 6,
+                                  offset: const Offset(4, 4),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.coffee_rounded,
+                                  size: 80,
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  itemSnapshot['Item Name'],
+                                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
+                                ),
+                              ],
+                            ),
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.coffee_rounded,
-                                size: 80,
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                itemSnapshot['Item Name'],
-                                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                } else {
-                  return const SizedBox(
-                    height: 15,
-                    width: 15,
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
+                        );
+                      },
+                    );
+                  } else {
+                    return const SizedBox(
+                      height: 15,
+                      width: 15,
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.brown.withValues(alpha: 0.15),
+                  spreadRadius: 0,
+                  blurRadius: 10,
+                  offset: const Offset(0, 0),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Text(
+                  'Your order is being prepared.',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
             ),
           ),
         ],

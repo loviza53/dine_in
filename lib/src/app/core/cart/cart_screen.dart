@@ -226,7 +226,7 @@ class _CartScreenState extends State<CartScreen> {
                               ),
                             ),
                             Text(
-                              "${totalBill! + 100}",
+                              "PKR ${totalBill! + 100}",
                               style: TextStyle(
                                 fontSize: 14,
                               ),

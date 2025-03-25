@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
 import 'package:dine_in/src/app/controllers/cart_controller.dart';
+import 'package:dine_in/src/app/core/checkout/checkout_screen.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -242,7 +243,7 @@ class _CartScreenState extends State<CartScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
             child: InkWell(
-              onTap: () {},
+              onTap: () => Get.to(() => CheckoutScreen()),
               borderRadius: BorderRadius.circular(10),
               child: Container(
                 height: 45,

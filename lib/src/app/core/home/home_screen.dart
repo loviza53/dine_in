@@ -7,6 +7,7 @@ import 'package:dine_in/src/app/core/setting/setting.dart';
 import 'package:dine_in/src/app/core/cart/cart_screen.dart';
 import 'package:dine_in/src/app/controllers/cart_controller.dart';
 import 'package:dine_in/src/app/core/item_detail/item_detail.dart';
+import 'package:dine_in/src/app/core/order_tracking/order_tracking_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,6 +22,24 @@ class _HomeScreenState extends State<HomeScreen> {
   final CartController controller = Get.find<CartController>();
 
   final itemCollection = FirebaseFirestore.instance.collection('Items');
+
+  void orderTracking() {
+    showModalBottomSheet(
+      context: context,
+      elevation: 0,
+      useSafeArea: true,
+      isDismissible: false,
+      isScrollControlled: true,
+      barrierColor: Colors.white,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(0),
+      ),
+      builder: (context) {
+        return OrderTrackingScreen();
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -261,10 +280,41 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Cappuccino',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () => orderTracking(),
+                      borderRadius: BorderRadius.circular(35),
+                      child: Container(
+                        height: 35,
+                        width: 35,
+                        decoration: BoxDecoration(
+                          color: accentColor.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Icon(
+                          Icons.keyboard_arrow_up,
+                          color: accentColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 Text(
-                  'Your order is being prepared.',
-                  style: TextStyle(fontSize: 16),
+                  'Preparing your order',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.black.withValues(alpha: 0.5),
+                  ),
                 ),
               ],
             ),

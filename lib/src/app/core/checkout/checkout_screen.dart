@@ -1,10 +1,11 @@
-import 'package:dine_in/src/app/core/home/home_screen.dart';
-import 'package:dine_in/src/app/core/order_tracking/order_tracking_screen.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
+import 'package:dine_in/src/constants/values.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dine_in/src/app/core/home/home_screen.dart';
 import 'package:dine_in/src/app/controllers/cart_controller.dart';
+import 'package:dine_in/src/app/core/order_tracking/order_tracking_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -15,6 +16,7 @@ class CheckoutScreen extends StatefulWidget {
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
   int? totalBill;
+  RxString selectedTable = ''.obs;
 
   final CartController controller = Get.find<CartController>();
 
@@ -87,173 +89,251 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             ),
           ),
           Expanded(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 5),
-                    decoration: BoxDecoration(
-                      color: accentColor.withValues(alpha: 0.5),
-                      borderRadius: BorderRadius.circular(15),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 5),
+                      decoration: BoxDecoration(
+                        color: accentColor.withValues(alpha: 0.5),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        itemCount: controller.cartItems.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    "${controller.cartItems[index]['Item Name']} ${controller.cartItems[index]['Size']} ${controller.cartItems[index]['Quantity']}x",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  "PKR ${controller.cartItems[index]['Total Price']}",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      itemCount: controller.cartItems.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: Row(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: accentColor.withValues(alpha: 0.5),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
                             children: [
                               Expanded(
                                 child: Text(
-                                  "${controller.cartItems[index]['Item Name']} ${controller.cartItems[index]['Size']} ${controller.cartItems[index]['Quantity']}x",
+                                  'Subtotal',
                                   style: TextStyle(
                                     fontSize: 14,
                                   ),
                                 ),
                               ),
                               Text(
-                                "PKR ${controller.cartItems[index]['Total Price']}",
+                                "PKR ${totalBill.toString()}",
                                 style: TextStyle(
                                   fontSize: 14,
                                 ),
                               ),
                             ],
                           ),
+                          SizedBox(height: 5),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'Delivery fee',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                'PKR 100',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 5),
+                          Divider(),
+                          SizedBox(height: 5),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'Total',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                "PKR ${totalBill! + 100}",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
+                      decoration: BoxDecoration(
+                        color: accentColor.withValues(alpha: 0.5),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.check_box_rounded, color: Colors.brown),
+                          SizedBox(width: 10),
+                          Text("Payment by Cash"),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Text(
+                      'Select table',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: GridView.builder(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        crossAxisSpacing: 15,
+                        mainAxisSpacing: 15,
+                        mainAxisExtent: 40,
+                      ),
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: tables.length,
+                      itemBuilder: (context, index) {
+                        return Obx(
+                          () => InkWell(
+                            onTap: () {
+                              selectedTable.value = tables[index];
+                            },
+                            borderRadius: BorderRadius.circular(10),
+                            child: Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: selectedTable.value == tables[index] ? selectedOptionColor : accentColor.withValues(alpha: 0.5),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                tables[index],
+                                style: TextStyle(
+                                  color: Colors.black.withValues(alpha: 0.8),
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ),
                         );
                       },
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: accentColor.withValues(alpha: 0.5),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                'Subtotal',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                            Text(
-                              "PKR ${totalBill.toString()}",
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                'Delivery fee',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                            Text(
-                              'PKR 100',
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 5),
-                        Divider(),
-                        SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                'Total',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                            Text(
-                              "PKR ${totalBill! + 100}",
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
-                    decoration: BoxDecoration(
-                      color: accentColor.withValues(alpha: 0.5),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.check_box_rounded, color: Colors.brown),
-                        SizedBox(width: 10),
-                        Text("Payment by Cash"),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-            child: InkWell(
-              onTap: () async {
-                await orderCollection.add({
-                  'Items': controller.cartItems,
-                }).then((value) async {
-                  controller.cartItems.clear();
-                  Get.offAll(() => HomeScreen());
-                  orderTracking();
-                });
-              },
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                height: 45,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: accentColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Center(
-                  child: Text(
-                    'Place Order',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                ],
               ),
             ),
           ),
+          Obx(() {
+            if (selectedTable.isEmpty) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                child: Container(
+                  height: 45,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Place Order',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            } else {
+              return Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                child: InkWell(
+                  onTap: () async {
+                    await orderCollection.add({
+                      'Items': controller.cartItems,
+                      'Table': selectedTable.value,
+                    }).then((value) async {
+                      controller.cartItems.clear();
+                      Get.offAll(() => HomeScreen());
+                      orderTracking();
+                    });
+                  },
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    height: 45,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: buttonColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Place Order',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
+          }),
         ],
       ),
     );

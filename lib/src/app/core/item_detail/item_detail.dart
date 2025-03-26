@@ -347,7 +347,7 @@ class _ItemDetailState extends State<ItemDetail> {
                 height: 45,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: accentColor,
+                  color: buttonColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(

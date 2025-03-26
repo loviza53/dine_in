@@ -1,4 +1,5 @@
 import 'package:dine_in/src/app/core/home/home_screen.dart';
+import 'package:dine_in/src/app/core/order_tracking/order_tracking_screen.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
@@ -18,6 +19,24 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   final CartController controller = Get.find<CartController>();
 
   final orderCollection = FirebaseFirestore.instance.collection('Orders');
+
+  void orderTracking() {
+    showModalBottomSheet(
+      context: context,
+      elevation: 0,
+      useSafeArea: true,
+      isDismissible: false,
+      isScrollControlled: true,
+      barrierColor: Colors.white,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(0),
+      ),
+      builder: (context) {
+        return OrderTrackingScreen();
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -209,9 +228,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               onTap: () async {
                 await orderCollection.add({
                   'Items': controller.cartItems,
-                }).then((value) {
+                }).then((value) async {
                   controller.cartItems.clear();
                   Get.offAll(() => HomeScreen());
+                  orderTracking();
                 });
               },
               borderRadius: BorderRadius.circular(10),

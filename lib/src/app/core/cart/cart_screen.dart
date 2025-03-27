@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
+import 'package:dine_in/src/constants/values.dart';
 import 'package:dine_in/src/app/controllers/cart_controller.dart';
 import 'package:dine_in/src/app/core/checkout/checkout_screen.dart';
 
@@ -239,7 +240,7 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                 ),
                                 Text(
-                                  "PKR ${totalBill + 100}",
+                                  "PKR ${totalBill + deliveryFee}",
                                   style: TextStyle(
                                     fontSize: 14,
                                   ),

@@ -19,3 +19,5 @@ List<String> tables = [
   'Table 24',
   'Table 25',
 ];
+
+int deliveryFee = 100;

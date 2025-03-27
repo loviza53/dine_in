@@ -198,7 +198,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 ),
                               ),
                               Text(
-                                "PKR ${totalBill! + 100}",
+                                "PKR ${totalBill! + deliveryFee}",
                                 style: TextStyle(
                                   fontSize: 14,
                                 ),
@@ -347,6 +347,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         'Items': cartController.cartItems,
                         'Table': selectedTable.value,
                         'Time': FieldValue.serverTimestamp(),
+                        'Total Bill': totalBill! + deliveryFee,
                       }).then((value) async {
                         DocumentSnapshot orderSnapshot = await value.get();
                         final SharedPreferences memory = await SharedPreferences.getInstance();
@@ -354,6 +355,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         orderController.orderedItems.value = orderSnapshot['Items'];
                         orderController.orderTime = orderSnapshot['Time'].toDate();
                         orderController.table.value = orderSnapshot['Table'];
+                        orderController.totalBill?.value = totalBill!;
                         orderController.orderId.value = orderSnapshot.id;
                         cartController.cartItems.clear();
                         Get.offAll(() => HomeScreen());

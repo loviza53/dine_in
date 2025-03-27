@@ -55,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
       orderController.orderedItems.value = orderSnapshot['Items'];
       orderController.orderTime = orderSnapshot['Time'].toDate();
       orderController.table.value = orderSnapshot['Table'];
+      orderController.totalBill?.value = orderSnapshot['Total Bill'];
       orderController.orderId.value = orderSnapshot.id;
     }
     isLoading.value = false;

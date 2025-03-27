@@ -1,3 +1,4 @@
+import 'package:dine_in/src/app/admin/orders/orders_screen.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
@@ -73,17 +74,41 @@ class _SettingState extends State<Setting> {
                     child: Row(
                       children: [
                         Icon(
-                          Icons.add_circle_outline_rounded,
+                          Icons.add_circle,
                           size: 26,
                           color: Colors.black.withValues(alpha: 0.6),
                         ),
-                        const SizedBox(width: 15),
+                        const SizedBox(width: 20),
                         const Text(
                           'Add Item',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () => Get.to(() => const OrdersScreen()),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.emoji_food_beverage_rounded,
+                          size: 26,
+                          color: Colors.black.withValues(alpha: 0.6),
+                        ),
+                        const SizedBox(width: 20),
+                        const Text(
+                          'Orders',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w300,
                           ),
                         ),
                       ],

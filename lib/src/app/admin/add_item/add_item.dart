@@ -38,7 +38,7 @@ class _AddItemState extends State<AddItem> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                 ),
               ),
             ),
@@ -57,7 +57,7 @@ class _AddItemState extends State<AddItem> {
                     ),
                     child: Icon(
                       Icons.chevron_left_rounded,
-                      color: Colors.black.withOpacity(0.6),
+                      color: Colors.black.withValues(alpha: 0.6),
                     ),
                   ),
                 ),
@@ -91,7 +91,7 @@ class _AddItemState extends State<AddItem> {
                           isCollapsed: true,
                           hintText: 'e.g. Cappuccino',
                           hintStyle: TextStyle(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withValues(alpha: 0.2),
                           ),
                           fillColor: filledTextFieldColor,
                           contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
@@ -151,7 +151,7 @@ class _AddItemState extends State<AddItem> {
                           isCollapsed: true,
                           hintText: 'Item Details',
                           hintStyle: TextStyle(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withValues(alpha: 0.2),
                           ),
                           fillColor: filledTextFieldColor,
                           contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
@@ -206,13 +206,13 @@ class _AddItemState extends State<AddItem> {
                           isCollapsed: true,
                           hintText: 'e.g. 299',
                           hintStyle: TextStyle(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withValues(alpha: 0.2),
                           ),
                           fillColor: filledTextFieldColor,
                           contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.white.withOpacity(0.15),
+                              color: Colors.white.withValues(alpha: 0.15),
                               width: 1,
                             ),
                             borderRadius: BorderRadius.circular(10),

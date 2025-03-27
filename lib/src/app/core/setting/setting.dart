@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
-import 'package:dine_in/src/app/core/add_item/add_item.dart';
+import 'package:dine_in/src/app/admin/add_item/add_item.dart';
 
 class Setting extends StatefulWidget {
   const Setting({super.key});
@@ -25,7 +25,7 @@ class _SettingState extends State<Setting> {
               border: Border(
                 bottom: BorderSide(
                   width: 0.5,
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                 ),
               ),
             ),
@@ -44,7 +44,7 @@ class _SettingState extends State<Setting> {
                     ),
                     child: Icon(
                       Icons.chevron_left_rounded,
-                      color: Colors.black.withOpacity(0.6),
+                      color: Colors.black.withValues(alpha: 0.6),
                     ),
                   ),
                 ),
@@ -75,7 +75,7 @@ class _SettingState extends State<Setting> {
                         Icon(
                           Icons.add_circle_outline_rounded,
                           size: 26,
-                          color: Colors.black.withOpacity(0.6),
+                          color: Colors.black.withValues(alpha: 0.6),
                         ),
                         const SizedBox(width: 15),
                         const Text(

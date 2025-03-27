@@ -87,16 +87,33 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                     fontSize: 16,
                                   ),
                                 ),
-                                Text(
-                                  DateFormat('hh:mm a').format(orderSnapshot['Time'].toDate()).toLowerCase(),
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.black.withValues(alpha: 0.5),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  decoration: BoxDecoration(
+                                    color: accentColor,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text(
+                                    'Pending',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.blue,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10),
+                            Text(
+                              DateFormat('hh:mm a').format(orderSnapshot['Time'].toDate()).toLowerCase(),
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withValues(alpha: 0.5),
+                              ),
+                            ),
+                            SizedBox(height: 20),
                             ListView.builder(
                               shrinkWrap: true,
                               padding: EdgeInsets.zero,
@@ -147,6 +164,53 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   style: TextStyle(
                                     color: Colors.black.withValues(alpha: 0.5),
                                     fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    backgroundColor: Colors.red,
+                                  ),
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    backgroundColor: Colors.green,
+                                  ),
+                                  child: Text(
+                                    'Prepare',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    backgroundColor: Colors.amber,
+                                  ),
+                                  child: Text(
+                                    'Mark as Deliver',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ],

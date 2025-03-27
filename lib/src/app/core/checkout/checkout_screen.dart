@@ -329,7 +329,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           'Placing Order...',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: 16,
                           ),
                         ),
                       ],

@@ -90,7 +90,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                                   decoration: BoxDecoration(
-                                    color: accentColor,
+                                    color: Colors.blue.withValues(alpha: 0.2),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Text(

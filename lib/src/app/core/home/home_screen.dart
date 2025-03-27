@@ -291,11 +291,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             shrinkWrap: true,
                             padding: EdgeInsets.zero,
                             physics: NeverScrollableScrollPhysics(),
-                            itemCount: 5, // Repeat 3 times
+                            itemCount: 6, // Repeat 3 times
                             itemBuilder: (context, index) {
                               return Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.black.withValues(alpha: 0.1),
+                                  color: accentColor.withValues(alpha: 0.15),
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                               );

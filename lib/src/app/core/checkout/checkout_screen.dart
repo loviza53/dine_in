@@ -4,6 +4,7 @@ import 'package:dine_in/src/constants/colors.dart';
 import 'package:dine_in/src/constants/values.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dine_in/src/app/core/home/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dine_in/src/app/controllers/cart_controller.dart';
 import 'package:dine_in/src/app/controllers/order_controller.dart';
 import 'package:dine_in/src/app/core/order_tracking/order_tracking_screen.dart';
@@ -348,9 +349,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         'Time': FieldValue.serverTimestamp(),
                       }).then((value) async {
                         DocumentSnapshot orderSnapshot = await value.get();
+                        final SharedPreferences memory = await SharedPreferences.getInstance();
+                        await memory.setString('Order ID', orderSnapshot.id);
                         orderController.orderedItems.value = orderSnapshot['Items'];
-                        orderController.table.value = orderSnapshot['Table'];
                         orderController.orderTime = orderSnapshot['Time'].toDate();
+                        orderController.table.value = orderSnapshot['Table'];
+                        orderController.orderId.value = orderSnapshot.id;
                         cartController.cartItems.clear();
                         Get.offAll(() => HomeScreen());
                         orderTracking();

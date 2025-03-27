@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
 
 class OrderController extends GetxController {
-  RxString table = ''.obs;
   DateTime? orderTime;
+  RxString table = ''.obs;
+  RxString orderId = ''.obs;
   RxList<dynamic> orderedItems = [].obs;
 }

@@ -17,7 +17,7 @@ class CheckoutScreen extends StatefulWidget {
 class _CheckoutScreenState extends State<CheckoutScreen> {
   int? totalBill;
   RxString selectedTable = ''.obs;
-  RxBool isLoading = true.obs;
+  RxBool isLoading = false.obs;
 
   final CartController controller = Get.find<CartController>();
 
@@ -339,6 +339,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
                   child: InkWell(
                     onTap: () async {
+                      isLoading.value = true;
                       await orderCollection.add({
                         'Items': controller.cartItems,
                         'Table': selectedTable.value,
@@ -347,6 +348,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         Get.offAll(() => HomeScreen());
                         orderTracking();
                       });
+                      isLoading.value = false;
                     },
                     borderRadius: BorderRadius.circular(10),
                     child: Container(

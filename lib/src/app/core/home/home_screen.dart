@@ -7,6 +7,7 @@ import 'package:dine_in/src/app/core/setting/setting.dart';
 import 'package:dine_in/src/app/core/cart/cart_screen.dart';
 import 'package:dine_in/src/app/controllers/cart_controller.dart';
 import 'package:dine_in/src/app/core/item_detail/item_detail.dart';
+import 'package:dine_in/src/app/controllers/order_controller.dart';
 import 'package:dine_in/src/app/core/order_tracking/order_tracking_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,7 +20,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String category = categories.first;
 
-  final CartController controller = Get.find<CartController>();
+  final CartController cartController = Get.find<CartController>();
+  final OrderController orderController = Get.find<OrderController>();
 
   final itemCollection = FirebaseFirestore.instance.collection('Items');
 
@@ -82,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Icons.shopping_cart_outlined,
                             size: 30,
                           ),
-                          if (controller.cartItems.isNotEmpty)
+                          if (cartController.cartItems.isNotEmpty)
                             Positioned(
                               right: 0,
                               top: 0,
@@ -95,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    controller.cartItems.length.toString(),
+                                    cartController.cartItems.length.toString(),
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.white,
@@ -261,64 +263,70 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.brown.withValues(alpha: 0.15),
-                  spreadRadius: 0,
-                  blurRadius: 10,
-                  offset: const Offset(0, 0),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Cappuccino',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
+          Obx(() {
+            if (orderController.orderedItems.isNotEmpty) {
+              return Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.brown.withValues(alpha: 0.15),
+                      spreadRadius: 0,
+                      blurRadius: 10,
+                      offset: const Offset(0, 0),
                     ),
-                    InkWell(
-                      onTap: () => orderTracking(),
-                      borderRadius: BorderRadius.circular(35),
-                      child: Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          color: accentColor.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(20),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Cappuccino',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
                         ),
-                        child: Icon(
-                          Icons.keyboard_arrow_up,
-                          color: accentColor,
+                        InkWell(
+                          onTap: () => orderTracking(),
+                          borderRadius: BorderRadius.circular(35),
+                          child: Container(
+                            height: 35,
+                            width: 35,
+                            decoration: BoxDecoration(
+                              color: accentColor.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Icon(
+                              Icons.keyboard_arrow_up,
+                              color: accentColor,
+                            ),
+                          ),
                         ),
+                      ],
+                    ),
+                    Text(
+                      'Preparing your order',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.black.withValues(alpha: 0.5),
                       ),
                     ),
                   ],
                 ),
-                Text(
-                  'Preparing your order',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.black.withValues(alpha: 0.5),
-                  ),
-                ),
-              ],
-            ),
-          ),
+              );
+            } else {
+              return SizedBox();
+            }
+          }),
         ],
       ),
     );

@@ -1,4 +1,3 @@
-import 'package:dine_in/src/app/controllers/order_controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
@@ -6,6 +5,7 @@ import 'package:dine_in/src/constants/values.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dine_in/src/app/core/home/home_screen.dart';
 import 'package:dine_in/src/app/controllers/cart_controller.dart';
+import 'package:dine_in/src/app/controllers/order_controller.dart';
 import 'package:dine_in/src/app/core/order_tracking/order_tracking_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -345,8 +345,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       await orderCollection.add({
                         'Items': cartController.cartItems,
                         'Table': selectedTable.value,
+                        'Time': FieldValue.serverTimestamp(),
                       }).then((value) async {
-                        orderController.orderedItems.value = cartController.cartItems;
+                        orderController.orderedItems.value = List.from(cartController.cartItems);
                         orderController.table.value = selectedTable.value;
                         cartController.cartItems.clear();
                         Get.offAll(() => HomeScreen());

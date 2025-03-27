@@ -347,8 +347,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         'Table': selectedTable.value,
                         'Time': FieldValue.serverTimestamp(),
                       }).then((value) async {
-                        orderController.orderedItems.value = List.from(cartController.cartItems);
-                        orderController.table.value = selectedTable.value;
+                        DocumentSnapshot orderSnapshot = await value.get();
+                        orderController.orderedItems.value = orderSnapshot['Items'];
+                        orderController.table.value = orderSnapshot['Table'];
+                        orderController.orderTime = orderSnapshot['Time'].toDate();
                         cartController.cartItems.clear();
                         Get.offAll(() => HomeScreen());
                         orderTracking();

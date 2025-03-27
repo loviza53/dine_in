@@ -9,6 +9,7 @@ import 'package:dine_in/src/app/controllers/cart_controller.dart';
 import 'package:dine_in/src/app/core/item_detail/item_detail.dart';
 import 'package:dine_in/src/app/controllers/order_controller.dart';
 import 'package:dine_in/src/app/core/order_tracking/order_tracking_screen.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -289,11 +290,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Cappuccino',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              orderController.table.toString(),
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              'Your order will arrive by ${DateFormat('hh:mm a').format(orderController.orderTime!.add(Duration(minutes: 20))).toLowerCase()}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withValues(alpha: 0.6),
+                              ),
+                            ),
+                          ],
                         ),
                         InkWell(
                           onTap: () => orderTracking(),

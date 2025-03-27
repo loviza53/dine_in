@@ -1,3 +1,4 @@
+import 'package:dine_in/src/app/controllers/order_controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
@@ -19,7 +20,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   RxString selectedTable = ''.obs;
   RxBool isLoading = false.obs;
 
-  final CartController controller = Get.find<CartController>();
+  final CartController cartController = Get.find<CartController>();
+  final OrderController orderController = Get.find<OrderController>();
 
   final orderCollection = FirebaseFirestore.instance.collection('Orders');
 
@@ -43,7 +45,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   void initState() {
-    totalBill = controller.cartItems.map((e) => e['Total Price']).reduce((value, element) => value + element);
+    totalBill = cartController.cartItems.map((e) => e['Total Price']).reduce((value, element) => value + element);
     super.initState();
   }
 
@@ -106,7 +108,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       child: ListView.builder(
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,
-                        itemCount: controller.cartItems.length,
+                        itemCount: cartController.cartItems.length,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 10),
@@ -114,14 +116,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    "${controller.cartItems[index]['Item Name']} ${controller.cartItems[index]['Size']} ${controller.cartItems[index]['Quantity']}x",
+                                    "${cartController.cartItems[index]['Item Name']} ${cartController.cartItems[index]['Size']} ${cartController.cartItems[index]['Quantity']}x",
                                     style: TextStyle(
                                       fontSize: 14,
                                     ),
                                   ),
                                 ),
                                 Text(
-                                  "PKR ${controller.cartItems[index]['Total Price']}",
+                                  "PKR ${cartController.cartItems[index]['Total Price']}",
                                   style: TextStyle(
                                     fontSize: 14,
                                   ),
@@ -341,10 +343,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     onTap: () async {
                       isLoading.value = true;
                       await orderCollection.add({
-                        'Items': controller.cartItems,
+                        'Items': cartController.cartItems,
                         'Table': selectedTable.value,
                       }).then((value) async {
-                        controller.cartItems.clear();
+                        orderController.orderedItems.value = cartController.cartItems;
+                        orderController.table.value = selectedTable.value;
+                        cartController.cartItems.clear();
                         Get.offAll(() => HomeScreen());
                         orderTracking();
                       });

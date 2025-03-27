@@ -6,9 +6,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:dine_in/src/constants/colors.dart';
 import 'package:dine_in/src/app/core/home/home_screen.dart';
 import 'package:dine_in/src/app/controllers/cart_controller.dart';
+import 'package:dine_in/src/app/controllers/order_controller.dart';
 
 Future<void> main() async {
   Get.put(CartController());
+  Get.put(OrderController());
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());

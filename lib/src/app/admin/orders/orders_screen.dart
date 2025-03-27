@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
+import 'package:dine_in/src/constants/values.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -120,6 +121,21 @@ class _OrdersScreenState extends State<OrdersScreen> {
                               },
                             ),
                             SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Delivery fee',
+                                ),
+                                Text(
+                                  'PKR $deliveryFee',
+                                  style: TextStyle(
+                                    color: Colors.black.withValues(alpha: 0.5),
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

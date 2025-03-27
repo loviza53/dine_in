@@ -17,6 +17,7 @@ class CheckoutScreen extends StatefulWidget {
 class _CheckoutScreenState extends State<CheckoutScreen> {
   int? totalBill;
   RxString selectedTable = ''.obs;
+  RxBool isLoading = true.obs;
 
   final CartController controller = Get.find<CartController>();
 
@@ -299,39 +300,75 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
               );
             } else {
-              return Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                child: InkWell(
-                  onTap: () async {
-                    await orderCollection.add({
-                      'Items': controller.cartItems,
-                      'Table': selectedTable.value,
-                    }).then((value) async {
-                      controller.cartItems.clear();
-                      Get.offAll(() => HomeScreen());
-                      orderTracking();
-                    });
-                  },
-                  borderRadius: BorderRadius.circular(10),
+              if (isLoading.value) {
+                return Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
                   child: Container(
                     height: 45,
                     width: double.infinity,
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: buttonColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Center(
-                      child: Text(
-                        'Place Order',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 15,
+                          width: 15,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Placing Order...',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                  child: InkWell(
+                    onTap: () async {
+                      await orderCollection.add({
+                        'Items': controller.cartItems,
+                        'Table': selectedTable.value,
+                      }).then((value) async {
+                        controller.cartItems.clear();
+                        Get.offAll(() => HomeScreen());
+                        orderTracking();
+                      });
+                    },
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      height: 45,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: buttonColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Place Order',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              );
+                );
+              }
             }
           }),
         ],

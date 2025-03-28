@@ -51,14 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> getOrderId() async {
     final SharedPreferences memory = await SharedPreferences.getInstance();
     orderId = memory.getString('Order ID')!;
-    DocumentSnapshot orderSnapshot = await FirebaseFirestore.instance.collection('Orders').doc(orderId).get();
-    if (orderSnapshot.exists) {
-      orderController.orderedItems.value = orderSnapshot['Items'];
-      orderController.orderTime = orderSnapshot['Time'].toDate();
-      orderController.table.value = orderSnapshot['Table'];
-      orderController.totalBill?.value = orderSnapshot['Total Bill'];
-      orderController.orderId.value = orderSnapshot.id;
-    }
+    orderController.orderId.value = orderId;
     isLoading.value = false;
   }
 
@@ -312,84 +305,92 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          StreamBuilder(
-            stream: orderCollection.doc(orderController.orderId.value).snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data!.exists) {
-                final orderSnapshot = snapshot.data!;
-                return InkWell(
-                  onTap: () => orderTracking(),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.brown.withValues(alpha: 0.15),
-                          spreadRadius: 0,
-                          blurRadius: 10,
-                          offset: const Offset(0, 0),
+          Obx(
+            () {
+              if (orderController.orderId.isNotEmpty) {
+                return StreamBuilder(
+                  stream: orderCollection.doc(orderController.orderId.value).snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data!.exists) {
+                      final orderSnapshot = snapshot.data!;
+                      return InkWell(
+                        onTap: () => orderTracking(),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
                         ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  orderSnapshot['Table'],
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  'Your order will arrive by ${DateFormat('hh:mm a').format(orderSnapshot['Time'].toDate()!.add(Duration(minutes: 20))).toLowerCase()}',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black.withValues(alpha: 0.6),
-                                  ),
-                                ),
-                              ],
+                        child: Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
                             ),
-                            Container(
-                              height: 35,
-                              width: 35,
-                              decoration: BoxDecoration(
-                                color: accentColor.withValues(alpha: 0.2),
-                                borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.brown.withValues(alpha: 0.15),
+                                spreadRadius: 0,
+                                blurRadius: 10,
+                                offset: const Offset(0, 0),
                               ),
-                              child: Icon(
-                                Icons.keyboard_arrow_up,
-                                color: accentColor,
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        orderSnapshot['Table'],
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        'Your order will arrive by ${DateFormat('hh:mm a').format(orderSnapshot['Time'].toDate()!.add(Duration(minutes: 20))).toLowerCase()}',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black.withValues(alpha: 0.6),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    height: 35,
+                                    width: 35,
+                                    decoration: BoxDecoration(
+                                      color: accentColor.withValues(alpha: 0.2),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Icon(
+                                      Icons.keyboard_arrow_up,
+                                      color: accentColor,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          'Preparing your order',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.black.withValues(alpha: 0.5),
+                              Text(
+                                'Preparing your order',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black.withValues(alpha: 0.5),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
+                      );
+                    } else {
+                      return SizedBox();
+                    }
+                  },
                 );
               } else {
                 return SizedBox();

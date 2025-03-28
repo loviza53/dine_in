@@ -48,6 +48,50 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
               ),
             ],
           ),
+          SizedBox(height: 50),
+          Icon(
+            Icons.coffee_maker_rounded,
+            color: accentColor,
+            size: 150,
+          ),
+          SizedBox(height: 20),
+          Text(
+            'Order Successfully Placed',
+            style: TextStyle(
+              fontSize: 26,
+              color: accentColor,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          Text(
+            'On the way to your table',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          SizedBox(height: 20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 35,
+                width: 35,
+                decoration: BoxDecoration(
+                  color: accentColor,
+                  borderRadius: BorderRadius.circular(35),
+                ),
+              ),
+              Container(
+                height: 100,
+                width: 5,
+                decoration: BoxDecoration(
+                  color: accentColor,
+                  borderRadius: BorderRadius.circular(35),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

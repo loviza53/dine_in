@@ -239,40 +239,87 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4,
-                        crossAxisSpacing: 15,
-                        mainAxisSpacing: 15,
-                        mainAxisExtent: 40,
-                      ),
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: tables.length,
-                      itemBuilder: (context, index) {
-                        return Obx(
-                          () => InkWell(
-                            onTap: () {
-                              selectedTable.value = tables[index];
-                            },
-                            borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: selectedTable.value == tables[index] ? selectedOptionColor : accentColor.withValues(alpha: 0.5),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                tables[index],
-                                style: TextStyle(
-                                  color: Colors.black.withValues(alpha: 0.8),
-                                  fontSize: 14,
-                                ),
-                              ),
+                    child: StreamBuilder(
+                      stream: orderCollection.snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          final RxList bookedTables = snapshot.data!.docs.map((e) => e['Table']).toSet().toList().obs;
+                          return GridView.builder(
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 4,
+                              crossAxisSpacing: 15,
+                              mainAxisSpacing: 15,
+                              mainAxisExtent: 40,
                             ),
-                          ),
-                        );
+                            shrinkWrap: true,
+                            padding: EdgeInsets.zero,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: tables.length,
+                            itemBuilder: (context, index) {
+                              return Obx(() {
+                                if (bookedTables.contains(tables[index])) {
+                                  return Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withValues(alpha: 0.2),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Text(
+                                      tables[index],
+                                      style: TextStyle(
+                                        color: Colors.black.withValues(alpha: 0.4),
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  return InkWell(
+                                    onTap: () {
+                                      selectedTable.value = tables[index];
+                                    },
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: selectedTable.value == tables[index] ? selectedOptionColor : accentColor.withValues(alpha: 0.5),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Text(
+                                        tables[index],
+                                        style: TextStyle(
+                                          color: Colors.black.withValues(alpha: 0.8),
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              });
+                            },
+                          );
+                        } else {
+                          return GridView.builder(
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 4,
+                              crossAxisSpacing: 15,
+                              mainAxisSpacing: 15,
+                              mainAxisExtent: 40,
+                            ),
+                            shrinkWrap: true,
+                            padding: EdgeInsets.zero,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: tables.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: accentColor.withValues(alpha: 0.15),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              );
+                            },
+                          );
+                        }
                       },
                     ),
                   ),

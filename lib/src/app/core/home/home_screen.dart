@@ -28,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final OrderController orderController = Get.find<OrderController>();
 
   final itemCollection = FirebaseFirestore.instance.collection('Items');
+  final orderCollection = FirebaseFirestore.instance.collection('Orders');
 
   void orderTracking() {
     showModalBottomSheet(
@@ -292,7 +293,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             shrinkWrap: true,
                             padding: EdgeInsets.zero,
                             physics: NeverScrollableScrollPhysics(),
-                            itemCount: 6, // Repeat 3 times
+                            itemCount: 6,
+                            // Repeat 3 times
                             itemBuilder: (context, index) {
                               return Container(
                                 decoration: BoxDecoration(
@@ -310,86 +312,90 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          Obx(() {
-            if (orderController.orderedItems.isNotEmpty) {
-              return InkWell(
-                onTap: () => orderTracking(),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.brown.withValues(alpha: 0.15),
-                        spreadRadius: 0,
-                        blurRadius: 10,
-                        offset: const Offset(0, 0),
-                      ),
-                    ],
+          StreamBuilder(
+            stream: orderCollection.doc(orderController.orderId.value).snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data!.exists) {
+                final orderSnapshot = snapshot.data!;
+                return InkWell(
+                  onTap: () => orderTracking(),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                orderController.table.toString(),
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                'Your order will arrive by ${DateFormat('hh:mm a').format(orderController.orderTime!.add(Duration(minutes: 20))).toLowerCase()}',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black.withValues(alpha: 0.6),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            height: 35,
-                            width: 35,
-                            decoration: BoxDecoration(
-                              color: accentColor.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Icon(
-                              Icons.keyboard_arrow_up,
-                              color: accentColor,
-                            ),
-                          ),
-                        ],
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
                       ),
-                      Text(
-                        'Preparing your order',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black.withValues(alpha: 0.5),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.brown.withValues(alpha: 0.15),
+                          spreadRadius: 0,
+                          blurRadius: 10,
+                          offset: const Offset(0, 0),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  orderSnapshot['Table'],
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  'Your order will arrive by ${DateFormat('hh:mm a').format(orderSnapshot['Time'].toDate()!.add(Duration(minutes: 20))).toLowerCase()}',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black.withValues(alpha: 0.6),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              height: 35,
+                              width: 35,
+                              decoration: BoxDecoration(
+                                color: accentColor.withValues(alpha: 0.2),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Icon(
+                                Icons.keyboard_arrow_up,
+                                color: accentColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          'Preparing your order',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.black.withValues(alpha: 0.5),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            } else {
-              return SizedBox();
-            }
-          }),
+                );
+              } else {
+                return SizedBox();
+              }
+            },
+          ),
         ],
       ),
     );

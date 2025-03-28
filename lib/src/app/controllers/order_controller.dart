@@ -5,5 +5,6 @@ class OrderController extends GetxController {
   RxInt? totalBill;
   RxString table = ''.obs;
   RxString orderId = ''.obs;
+  RxString status = ''.obs;
   RxList<dynamic> orderedItems = [].obs;
 }

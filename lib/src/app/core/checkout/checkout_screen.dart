@@ -348,6 +348,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         'Table': selectedTable.value,
                         'Time': FieldValue.serverTimestamp(),
                         'Total Bill': totalBill! + deliveryFee,
+                        'Status': 'Pending',
                       }).then((value) async {
                         DocumentSnapshot orderSnapshot = await value.get();
                         final SharedPreferences memory = await SharedPreferences.getInstance();
@@ -355,6 +356,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         orderController.orderedItems.value = orderSnapshot['Items'];
                         orderController.orderTime = orderSnapshot['Time'].toDate();
                         orderController.table.value = orderSnapshot['Table'];
+                        orderController.status.value = orderSnapshot['Status'];
                         orderController.totalBill?.value = totalBill!;
                         orderController.orderId.value = orderSnapshot.id;
                         cartController.cartItems.clear();

@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final itemCollection = FirebaseFirestore.instance.collection('Items');
   final orderCollection = FirebaseFirestore.instance.collection('Orders');
 
-  void orderTracking() {
+  void orderTracking(String id) {
     showModalBottomSheet(
       context: context,
       elevation: 0,
@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(0),
       ),
       builder: (context) {
-        return OrderTrackingScreen();
+        return OrderTrackingScreen(orderId: id);
       },
     );
   }
@@ -314,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     if (snapshot.hasData && snapshot.data!.exists) {
                       final orderSnapshot = snapshot.data!;
                       return InkWell(
-                        onTap: () => orderTracking(),
+                        onTap: () => orderTracking(orderSnapshot.id),
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20),

@@ -26,7 +26,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   final orderCollection = FirebaseFirestore.instance.collection('Orders');
 
-  void orderTracking() {
+  void orderTracking(String id) {
     showModalBottomSheet(
       context: context,
       elevation: 0,
@@ -39,7 +39,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         borderRadius: BorderRadius.circular(0),
       ),
       builder: (context) {
-        return OrderTrackingScreen();
+        return OrderTrackingScreen(orderId: id);
       },
     );
   }
@@ -408,7 +408,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         orderController.orderId.value = orderSnapshot.id;
                         cartController.cartItems.clear();
                         Get.offAll(() => HomeScreen());
-                        orderTracking();
+                        orderTracking(orderSnapshot.id);
                       });
                       isLoading.value = false;
                     },

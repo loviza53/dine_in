@@ -39,6 +39,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
       padding: EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         children: [
+          SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:dine_in/src/constants/colors.dart';
@@ -76,7 +77,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
             'Order Successfully Placed',
             style: TextStyle(
               fontSize: 26,
-              color: accentColor,
+              color: Colors.black,
               fontWeight: FontWeight.w300,
             ),
           ),
@@ -88,93 +89,204 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
             ),
           ),
           SizedBox(height: 20),
-          StreamBuilder(
-            stream: orderCollection.doc(widget.orderId).snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                final orderSnapshot = snapshot.data!;
-                return Column(
-                  children: [
-                    TimelineTile(
-                      isFirst: true,
-                      alignment: TimelineAlign.start,
-                      indicatorStyle: IndicatorStyle(
-                        width: 30,
-                        color: orderSnapshot['Status'] == 'Pending' || orderSnapshot['Status'] == 'Preparing' || orderSnapshot['Status'] == 'Delivered' ? Colors.black : accentColor,
-                      ),
-                      beforeLineStyle: LineStyle(
-                        thickness: 4,
-                        color: orderSnapshot['Status'] == 'Pending' || orderSnapshot['Status'] == 'Preparing' || orderSnapshot['Status'] == 'Delivered' ? Colors.black : accentColor,
-                      ),
-                      afterLineStyle: LineStyle(
-                        thickness: 4,
-                        color: orderSnapshot['Status'] == 'Pending' || orderSnapshot['Status'] == 'Preparing' || orderSnapshot['Status'] == 'Delivered' ? Colors.black : accentColor,
-                      ),
-                      endChild: Container(
-                        margin: EdgeInsets.only(left: 10),
-                        padding: EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          // color: accentColor.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(15),
+          Padding(
+            padding: const EdgeInsets.only(left: 35),
+            child: StreamBuilder(
+              stream: orderCollection.doc(widget.orderId).snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final orderSnapshot = snapshot.data!;
+                  return Column(
+                    children: [
+                      TimelineTile(
+                        isFirst: true,
+                        alignment: TimelineAlign.start,
+                        indicatorStyle: IndicatorStyle(
+                          width: 30,
+                          color: orderSnapshot['Status'] == 'Pending' || orderSnapshot['Status'] == 'Preparing' || orderSnapshot['Status'] == 'Delivered' || orderSnapshot['Status'] == 'Cancelled'
+                              ? Colors.black
+                              : accentColor,
+                          iconStyle: orderSnapshot['Status'] == 'Pending' || orderSnapshot['Status'] == 'Preparing' || orderSnapshot['Status'] == 'Delivered' || orderSnapshot['Status'] == 'Cancelled'
+                              ? IconStyle(
+                                  iconData: Icons.check,
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                )
+                              : null,
                         ),
-                        child: Text(
-                          'Order Placed',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.brown,
-                            fontWeight: FontWeight.w500,
+                        beforeLineStyle: LineStyle(
+                          thickness: 4,
+                          color: orderSnapshot['Status'] == 'Pending' || orderSnapshot['Status'] == 'Preparing' || orderSnapshot['Status'] == 'Delivered' || orderSnapshot['Status'] == 'Cancelled'
+                              ? Colors.black
+                              : accentColor,
+                        ),
+                        afterLineStyle: LineStyle(
+                          thickness: 4,
+                          color: orderSnapshot['Status'] == 'Pending' || orderSnapshot['Status'] == 'Preparing' || orderSnapshot['Status'] == 'Delivered' || orderSnapshot['Status'] == 'Cancelled'
+                              ? Colors.black
+                              : accentColor,
+                        ),
+                        endChild: Padding(
+                          padding: const EdgeInsets.only(left: 50, top: 30, bottom: 30),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Order Placed',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: accentColor,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Text(
+                                DateFormat('hh:mm a, dd MMMM yyyy').format(orderSnapshot['Time'].toDate()!),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black.withValues(alpha: 0.5),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ),
-                    TimelineTile(
-                      alignment: TimelineAlign.start,
-                      indicatorStyle: IndicatorStyle(
-                        width: 30,
-                        color: orderSnapshot['Status'] == 'Preparing' || orderSnapshot['Status'] == 'Delivered' ? accentColor : Colors.black,
-                      ),
-                      beforeLineStyle: LineStyle(
-                        thickness: 4,
-                        color: orderSnapshot['Status'] == 'Preparing' || orderSnapshot['Status'] == 'Delivered' ? accentColor : Colors.black.withValues(alpha: 0.2),
-                      ),
-                      afterLineStyle: LineStyle(
-                        thickness: 4,
-                        color: orderSnapshot['Status'] == 'Preparing' || orderSnapshot['Status'] == 'Delivered' ? accentColor : Colors.black.withValues(alpha: 0.2),
-                      ),
-                      endChild: Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          'Preparing your Order',
-                          style: TextStyle(fontSize: 16),
+                      TimelineTile(
+                        alignment: TimelineAlign.start,
+                        indicatorStyle: IndicatorStyle(
+                          width: 30,
+                          color: orderSnapshot['Status'] == 'Cancelled'
+                              ? Colors.red
+                              : (orderSnapshot['Status'] == 'Preparing' || orderSnapshot['Status'] == 'Delivered')
+                                  ? Colors.black
+                                  : accentColor,
+                          iconStyle: orderSnapshot['Status'] == 'Cancelled'
+                              ? IconStyle(
+                                  iconData: Icons.close,
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                )
+                              : (orderSnapshot['Status'] == 'Preparing' || orderSnapshot['Status'] == 'Delivered')
+                                  ? IconStyle(
+                                      iconData: Icons.check,
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                    )
+                                  : null,
+                        ),
+                        beforeLineStyle: LineStyle(
+                          thickness: 4,
+                          color: orderSnapshot['Status'] == 'Preparing' || orderSnapshot['Status'] == 'Delivered' || orderSnapshot['Status'] == 'Cancelled' ? Colors.black : accentColor,
+                        ),
+                        afterLineStyle: LineStyle(
+                          thickness: 4,
+                          color: orderSnapshot['Status'] == 'Cancelled'
+                              ? accentColor
+                              : (orderSnapshot['Status'] == 'Preparing' || orderSnapshot['Status'] == 'Delivered')
+                                  ? Colors.black
+                                  : accentColor,
+                        ),
+                        endChild: Padding(
+                          padding: const EdgeInsets.only(left: 50, top: 30, bottom: 30),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (orderSnapshot['Status'] == 'Preparing' || orderSnapshot['Status'] == 'Delivered')
+                                Text(
+                                  'Preparing your Order',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: accentColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              if (orderSnapshot['Status'] == 'Preparing' || orderSnapshot['Status'] == 'Delivered')
+                                Text(
+                                  DateFormat('hh:mm a, dd MMMM yyyy').format(orderSnapshot['Preparing Time'].toDate()!),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black.withValues(alpha: 0.5),
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              if (orderSnapshot['Status'] == 'Cancelled')
+                                Text(
+                                  'Cancelled',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              if (orderSnapshot['Status'] == 'Cancelled')
+                                Text(
+                                  DateFormat('hh:mm a, dd MMMM yyyy').format(orderSnapshot['Cancelled Time'].toDate()!),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black.withValues(alpha: 0.5),
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    TimelineTile(
-                      isLast: true,
-                      alignment: TimelineAlign.start,
-                      indicatorStyle: IndicatorStyle(
-                        width: 30,
-                        color: orderSnapshot['Status'] == 'Delivered' ? Colors.black : accentColor,
+                      TimelineTile(
+                        isLast: true,
+                        alignment: TimelineAlign.start,
+                        indicatorStyle: IndicatorStyle(
+                          width: 30,
+                          color: orderSnapshot['Status'] == 'Delivered' ? Colors.black : accentColor,
+                          iconStyle: orderSnapshot['Status'] == 'Delivered'
+                              ? IconStyle(
+                                  iconData: Icons.check,
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                )
+                              : null,
+                        ),
+                        beforeLineStyle: LineStyle(
+                          thickness: 4,
+                          color: orderSnapshot['Status'] == 'Delivered' ? Colors.black : accentColor,
+                        ),
+                        afterLineStyle: LineStyle(
+                          thickness: 4,
+                          color: orderSnapshot['Status'] == 'Delivered' ? Colors.black : accentColor,
+                        ),
+                        endChild: Padding(
+                          padding: const EdgeInsets.only(left: 50, top: 30, bottom: 30),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (orderSnapshot['Status'] == 'Delivered')
+                                Text(
+                                  'Delivered',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: accentColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              if (orderSnapshot['Status'] == 'Delivered')
+                                Text(
+                                  DateFormat('hh:mm a, dd MMMM yyyy').format(orderSnapshot['Delivered Time'].toDate()!),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black.withValues(alpha: 0.5),
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
                       ),
-                      beforeLineStyle: LineStyle(
-                        thickness: 4,
-                        color: orderSnapshot['Status'] == 'Delivered' ? accentColor : Colors.black.withValues(alpha: 0.2),
-                      ),
-                      afterLineStyle: LineStyle(
-                        thickness: 4,
-                        color: orderSnapshot['Status'] == 'Delivered' ? accentColor : Colors.black.withValues(alpha: 0.2),
-                      ),
-                      endChild: Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text('Order Placed', style: TextStyle(fontSize: 16)),
-                      ),
-                    ),
-                  ],
-                );
-              } else {
-                return CircularProgressIndicator();
-              }
-            },
+                    ],
+                  );
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
           ),
         ],
       ),

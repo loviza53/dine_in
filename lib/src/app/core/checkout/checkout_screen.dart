@@ -240,7 +240,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: StreamBuilder(
-                      stream: orderCollection.snapshots(),
+                      stream: orderCollection.where('Status', whereNotIn: ['Delivered', 'Cancelled']).snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           final RxList bookedTables = snapshot.data!.docs.map((e) => e['Table']).toSet().toList().obs;

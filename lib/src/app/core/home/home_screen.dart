@@ -55,6 +55,12 @@ class _HomeScreenState extends State<HomeScreen> {
     isLoading.value = false;
   }
 
+  Future<void> resetOrderId() async {
+    final SharedPreferences memory = await SharedPreferences.getInstance();
+    orderController.orderId.value = '';
+    await memory.clear();
+  }
+
   @override
   initState() {
     getOrderId();
@@ -313,6 +319,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData && snapshot.data!.exists) {
                       final orderSnapshot = snapshot.data!;
+                      if (orderSnapshot['Status'] == 'Delivered' || orderSnapshot['Status'] == 'Cancelled') {
+                        resetOrderId();
+                      }
                       return InkWell(
                         onTap: () => orderTracking(orderSnapshot.id),
                         borderRadius: BorderRadius.only(

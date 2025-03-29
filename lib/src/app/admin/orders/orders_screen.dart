@@ -60,7 +60,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: StreamBuilder(
-                stream: orderCollection.orderBy('Time', descending: true).snapshots(),
+                stream: orderCollection.where('Status', whereNotIn: ['Delivered', 'Cancelled']).orderBy('Time', descending: true).snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(
@@ -94,11 +94,24 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    orderSnapshot['Table'],
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        orderSnapshot['Table'],
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Text(
+                                        DateFormat('hh:mm a, dd MMMM yyyy').format(orderSnapshot['Time'].toDate()).toLowerCase(),
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black.withValues(alpha: 0.5),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   Obx(
                                     () {
@@ -135,14 +148,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                     },
                                   ),
                                 ],
-                              ),
-                              Text(
-                                DateFormat('hh:mm a').format(orderSnapshot['Time'].toDate()).toLowerCase(),
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black.withValues(alpha: 0.5),
-                                ),
                               ),
                               SizedBox(height: 20),
                               ListView.builder(
@@ -264,45 +269,35 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                     return Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 10),
-                                          child: InkWell(
-                                            onTap: () async {
-                                              await orderCollection.doc(orderSnapshot.id).update({
-                                                'Status': 'Cancelled',
-                                              }).then((value) async {
-                                                isLoading.value = true;
-                                                await orderHistoryCollection.doc(orderSnapshot.id).set({
-                                                  'Items': orderSnapshot['Items'],
-                                                  'Table': orderSnapshot['Table'],
-                                                  'Time': orderSnapshot['Time'],
-                                                  'Total Bill': orderSnapshot['Total Bill'],
+                                        if (orderSnapshot['Status'] != 'Delivered' && orderSnapshot['Status'] != 'Cancelled')
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 10),
+                                            child: InkWell(
+                                              onTap: () async {
+                                                await orderCollection.doc(orderSnapshot.id).update({
                                                   'Status': 'Cancelled',
-                                                  'Status Update Time': FieldValue.serverTimestamp(),
+                                                  'Cancelled Time': FieldValue.serverTimestamp(),
                                                 });
-                                              }).then((value) {
-                                                orderCollection.doc(orderSnapshot.id).delete();
-                                              });
-                                              isLoading.value = false;
-                                            },
-                                            borderRadius: BorderRadius.circular(35),
-                                            child: Container(
-                                              height: 35,
-                                              alignment: Alignment.center,
-                                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                                              decoration: BoxDecoration(
-                                                color: Colors.red,
-                                                borderRadius: BorderRadius.circular(35),
-                                              ),
-                                              child: Text(
-                                                'Cancel',
-                                                style: TextStyle(
-                                                  color: Colors.white,
+                                                isLoading.value = false;
+                                              },
+                                              borderRadius: BorderRadius.circular(35),
+                                              child: Container(
+                                                height: 35,
+                                                alignment: Alignment.center,
+                                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.red,
+                                                  borderRadius: BorderRadius.circular(35),
+                                                ),
+                                                child: Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
                                         if (orderSnapshot['Status'] == 'Pending')
                                           Padding(
                                             padding: const EdgeInsets.only(right: 10),
@@ -311,6 +306,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                                 isLoading.value = true;
                                                 await orderCollection.doc(orderSnapshot.id).update({
                                                   'Status': 'Preparing',
+                                                  'Preparing Time': FieldValue.serverTimestamp(),
                                                 });
                                                 isLoading.value = false;
                                               },
@@ -332,42 +328,33 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                               ),
                                             ),
                                           ),
-                                        InkWell(
-                                          onTap: () async {
-                                            isLoading.value = true;
-                                            await orderCollection.doc(orderSnapshot.id).update({
-                                              'Status': 'Delivered',
-                                            }).then((value) async {
-                                              await orderHistoryCollection.doc(orderSnapshot.id).set({
-                                                'Items': orderSnapshot['Items'],
-                                                'Table': orderSnapshot['Table'],
-                                                'Time': orderSnapshot['Time'],
-                                                'Total Bill': orderSnapshot['Total Bill'],
+                                        if (orderSnapshot['Status'] != 'Delivered' && orderSnapshot['Status'] != 'Cancelled' && orderSnapshot['Status'] != 'Pending')
+                                          InkWell(
+                                            onTap: () async {
+                                              isLoading.value = true;
+                                              await orderCollection.doc(orderSnapshot.id).update({
                                                 'Status': 'Delivered',
-                                                'Status Update Time': FieldValue.serverTimestamp(),
+                                                'Delivered Time': FieldValue.serverTimestamp(),
                                               });
-                                            }).then((value) {
-                                              orderCollection.doc(orderSnapshot.id).delete();
-                                            });
-                                            isLoading.value = false;
-                                          },
-                                          borderRadius: BorderRadius.circular(35),
-                                          child: Container(
-                                            height: 35,
-                                            alignment: Alignment.center,
-                                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                                            decoration: BoxDecoration(
-                                              color: Colors.amber,
-                                              borderRadius: BorderRadius.circular(35),
-                                            ),
-                                            child: Text(
-                                              'Mark as Deliver',
-                                              style: TextStyle(
-                                                color: Colors.white,
+                                              isLoading.value = false;
+                                            },
+                                            borderRadius: BorderRadius.circular(35),
+                                            child: Container(
+                                              height: 35,
+                                              alignment: Alignment.center,
+                                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                                              decoration: BoxDecoration(
+                                                color: Colors.amber,
+                                                borderRadius: BorderRadius.circular(35),
+                                              ),
+                                              child: Text(
+                                                'Mark as Deliver',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
                                       ],
                                     );
                                   }

@@ -431,7 +431,13 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                           ],
                         );
                       } else {
-                        return CircularProgressIndicator();
+                        return SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
+                        );
                       }
                     },
                   ),

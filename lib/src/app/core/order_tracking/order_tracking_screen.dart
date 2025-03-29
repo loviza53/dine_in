@@ -73,7 +73,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                 children: [
                   SizedBox(height: 50),
                   Icon(
-                    Icons.coffee_maker_rounded,
+                    Icons.coffee_rounded,
                     color: accentColor,
                     size: 150,
                   ),

@@ -255,7 +255,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                     alignment: TimelineAlign.start,
                                     indicatorStyle: IndicatorStyle(
                                       width: 30,
-                                      color: orderSnapshot['Status'] == 'Delivered' ? Colors.black : accentColor,
+                                      color: orderSnapshot['Status'] == 'Delivered' ? Colors.green : accentColor,
                                       iconStyle: orderSnapshot['Status'] == 'Delivered'
                                           ? IconStyle(
                                               iconData: Icons.check,
@@ -282,7 +282,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                               'Delivered',
                                               style: TextStyle(
                                                 fontSize: 16,
-                                                color: accentColor,
+                                                color: Colors.green,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),

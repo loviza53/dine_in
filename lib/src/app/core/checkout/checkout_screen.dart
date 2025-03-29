@@ -45,7 +45,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
-  void popUpMessage() {
+  Future<void> messageBox() async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -403,7 +403,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       isLoading.value = true;
                       final SharedPreferences memory = await SharedPreferences.getInstance();
                       if (memory.containsKey('Order ID')) {
-                        popUpMessage();
+                        await messageBox();
                       } else {
                         await orderCollection.add({
                           'Items': cartController.cartItems,

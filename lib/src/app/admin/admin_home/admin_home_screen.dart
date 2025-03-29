@@ -1,16 +1,17 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
-import 'package:dine_in/src/app/admin/admin_home/admin_home_screen.dart';
+import 'package:dine_in/src/app/admin/add_item/add_item.dart';
+import 'package:dine_in/src/app/admin/orders/orders_screen.dart';
 
-class Setting extends StatefulWidget {
-  const Setting({super.key});
+class AdminHomeScreen extends StatefulWidget {
+  const AdminHomeScreen({super.key});
 
   @override
-  State<Setting> createState() => _SettingState();
+  State<AdminHomeScreen> createState() => _AdminHomeScreenState();
 }
 
-class _SettingState extends State<Setting> {
+class _AdminHomeScreenState extends State<AdminHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +51,7 @@ class _SettingState extends State<Setting> {
                 ),
                 const Center(
                   child: Text(
-                    'Setting',
+                    'Admin',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 18,
@@ -64,22 +65,45 @@ class _SettingState extends State<Setting> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 InkWell(
-                  onTap: () => Get.to(() => const AdminHomeScreen()),
+                  onTap: () => Get.to(() => const AddItem()),
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                     child: Row(
                       children: [
                         Icon(
-                          Icons.admin_panel_settings_rounded,
+                          Icons.add_circle,
                           size: 26,
                           color: accentColor,
                         ),
                         const SizedBox(width: 20),
                         const Text(
-                          'Admin',
+                          'Add Item',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () => Get.to(() => const OrdersScreen()),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.emoji_food_beverage_rounded,
+                          size: 26,
+                          color: accentColor,
+                        ),
+                        const SizedBox(width: 20),
+                        const Text(
+                          'Orders',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,

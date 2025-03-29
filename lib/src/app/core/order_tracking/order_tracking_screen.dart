@@ -1,9 +1,9 @@
-import 'package:dine_in/src/constants/values.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:dine_in/src/constants/colors.dart';
+import 'package:dine_in/src/constants/values.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OrderTrackingScreen extends StatefulWidget {

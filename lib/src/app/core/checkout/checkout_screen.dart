@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
 import 'package:dine_in/src/constants/values.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dine_in/src/app/widgets/message_box.dart';
 import 'package:dine_in/src/app/core/home/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dine_in/src/app/controllers/cart_controller.dart';
@@ -40,6 +41,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       ),
       builder: (context) {
         return OrderTrackingScreen(orderId: id);
+      },
+    );
+  }
+
+  void popUpMessage() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return MessageBox();
       },
     );
   }
@@ -390,26 +401,30 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   child: InkWell(
                     onTap: () async {
                       isLoading.value = true;
-                      await orderCollection.add({
-                        'Items': cartController.cartItems,
-                        'Table': selectedTable.value,
-                        'Time': FieldValue.serverTimestamp(),
-                        'Total Bill': totalBill! + deliveryFee,
-                        'Status': 'Pending',
-                      }).then((value) async {
-                        DocumentSnapshot orderSnapshot = await value.get();
-                        final SharedPreferences memory = await SharedPreferences.getInstance();
-                        await memory.setString('Order ID', orderSnapshot.id);
-                        orderController.orderedItems.value = orderSnapshot['Items'];
-                        orderController.orderTime = orderSnapshot['Time'].toDate();
-                        orderController.table.value = orderSnapshot['Table'];
-                        orderController.status.value = orderSnapshot['Status'];
-                        orderController.totalBill?.value = totalBill!;
-                        orderController.orderId.value = orderSnapshot.id;
-                        cartController.cartItems.clear();
-                        Get.offAll(() => HomeScreen());
-                        orderTracking(orderSnapshot.id);
-                      });
+                      final SharedPreferences memory = await SharedPreferences.getInstance();
+                      if (memory.containsKey('Order ID')) {
+                        popUpMessage();
+                      } else {
+                        await orderCollection.add({
+                          'Items': cartController.cartItems,
+                          'Table': selectedTable.value,
+                          'Time': FieldValue.serverTimestamp(),
+                          'Total Bill': totalBill! + deliveryFee,
+                          'Status': 'Pending',
+                        }).then((value) async {
+                          DocumentSnapshot orderSnapshot = await value.get();
+                          await memory.setString('Order ID', orderSnapshot.id);
+                          orderController.orderedItems.value = orderSnapshot['Items'];
+                          orderController.orderTime = orderSnapshot['Time'].toDate();
+                          orderController.table.value = orderSnapshot['Table'];
+                          orderController.status.value = orderSnapshot['Status'];
+                          orderController.totalBill?.value = totalBill!;
+                          orderController.orderId.value = orderSnapshot.id;
+                          cartController.cartItems.clear();
+                          Get.offAll(() => HomeScreen());
+                          orderTracking(orderSnapshot.id);
+                        });
+                      }
                       isLoading.value = false;
                     },
                     borderRadius: BorderRadius.circular(10),

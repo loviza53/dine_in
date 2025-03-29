@@ -14,7 +14,6 @@ class OrdersScreen extends StatefulWidget {
 
 class _OrdersScreenState extends State<OrdersScreen> {
   final orderCollection = FirebaseFirestore.instance.collection('Orders');
-  final orderHistoryCollection = FirebaseFirestore.instance.collection('Order History');
 
   @override
   Widget build(BuildContext context) {

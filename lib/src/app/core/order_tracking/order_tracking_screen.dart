@@ -19,17 +19,9 @@ class OrderTrackingScreen extends StatefulWidget {
 }
 
 class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
-  int currentStep = 1;
+  int? totalBill;
 
   final orderCollection = FirebaseFirestore.instance.collection('Orders');
-
-  void nextStep() {
-    if (currentStep < 3) {
-      setState(() {
-        currentStep++;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +92,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         final orderSnapshot = snapshot.data!;
+                        totalBill = orderSnapshot['Items'].map((e) => e['Total Price']).reduce((value, element) => value + element);
                         return Column(
                           children: [
                             Padding(
@@ -378,7 +371,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                         ),
                                       ),
                                       Text(
-                                        "PKR ${orderSnapshot['Total Bill']}",
+                                        "PKR $totalBill",
                                         style: TextStyle(
                                           fontSize: 14,
                                         ),
@@ -397,7 +390,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                         ),
                                       ),
                                       Text(
-                                        'PKR 100',
+                                        'PKR $deliveryFee',
                                         style: TextStyle(
                                           fontSize: 14,
                                         ),
@@ -418,7 +411,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                         ),
                                       ),
                                       Text(
-                                        "PKR ${orderSnapshot['Total Bill']! + deliveryFee}",
+                                        "PKR ${orderSnapshot['Total Bill']}",
                                         style: TextStyle(
                                           fontSize: 14,
                                         ),

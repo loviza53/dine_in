@@ -188,7 +188,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 ),
                               ),
                               Text(
-                                'PKR 100',
+                                'PKR $deliveryFee',
                                 style: TextStyle(
                                   fontSize: 14,
                                 ),

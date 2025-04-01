@@ -50,7 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> getOrderId() async {
     final SharedPreferences memory = await SharedPreferences.getInstance();
-    orderId = memory.getString('Order ID')!;
+    if (memory.getString('Order ID') != null) {
+      orderId = memory.getString('Order ID')!;
+    }
     orderController.orderId.value = orderId;
     isLoading.value = false;
   }

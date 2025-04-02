@@ -125,10 +125,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
                                   child: Text(
-                                    "${cartController.cartItems[index]['Item Name']} ${cartController.cartItems[index]['Size']} ${cartController.cartItems[index]['Quantity']}x",
+                                    "${cartController.cartItems[index]['Item Name']}${cartController.cartItems[index]['Size'] == null ? '' : ' ${cartController.cartItems[index]['Size']}'} ${cartController.cartItems[index]['Quantity']}x${cartController.cartItems[index]['Sugar'] == null ? '' : '\nSugar: ${cartController.cartItems[index]['Sugar']}'}",
                                     style: TextStyle(
                                       fontSize: 14,
                                     ),

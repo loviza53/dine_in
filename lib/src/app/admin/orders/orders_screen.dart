@@ -155,20 +155,24 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                 physics: NeverScrollableScrollPhysics(),
                                 itemCount: orderSnapshot['Items'].length,
                                 itemBuilder: (context, index) {
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '${orderSnapshot['Items'][index]['Item Name']}, ${orderSnapshot['Items'][index]['Size']} ${orderSnapshot['Items'][index]['Quantity']}x',
-                                      ),
-                                      Text(
-                                        'PKR ${orderSnapshot['Items'][index]['Total Price']}',
-                                        style: TextStyle(
-                                          color: Colors.black.withValues(alpha: 0.5),
-                                          fontSize: 12,
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${orderSnapshot['Items'][index]['Item Name']}${orderSnapshot['Items'][index]['Size'] == null ? '' : ' ${orderSnapshot['Items'][index]['Size']}'} ${orderSnapshot['Items'][index]['Quantity']}x${orderSnapshot['Items'][index]['Sugar'] == null ? '' : '\nSugar: ${orderSnapshot['Items'][index]['Sugar']}'}',
                                         ),
-                                      ),
-                                    ],
+                                        Text(
+                                          'PKR ${orderSnapshot['Items'][index]['Total Price']}',
+                                          style: TextStyle(
+                                            color: Colors.black.withValues(alpha: 0.5),
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   );
                                 },
                               ),

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dine_in/src/constants/colors.dart';
 import 'package:dine_in/src/constants/values.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dine_in/src/app/controllers/cart_controller.dart';
 
 class ItemDetail extends StatefulWidget {
@@ -13,12 +12,14 @@ class ItemDetail extends StatefulWidget {
     required this.itemName,
     required this.price,
     required this.category,
+    required this.description,
   });
 
   final String id;
   final String itemName;
   final String price;
   final String category;
+  final String description;
 
   @override
   State<ItemDetail> createState() => _ItemDetailState();
@@ -31,8 +32,6 @@ class _ItemDetailState extends State<ItemDetail> {
   int? totalPrice;
 
   final CartController controller = Get.find<CartController>();
-
-  final itemCollection = FirebaseFirestore.instance.collection('Items');
 
   @override
   void initState() {
@@ -167,134 +166,148 @@ class _ItemDetailState extends State<ItemDetail> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    Text(
-                      'Size',
-                      style: TextStyle(
-                        fontSize: 16,
+                    if (widget.category == 'Breakfast')
+                      Text(
+                        widget.description,
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 5),
-                    SizedBox(
-                      height: 60,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        padding: EdgeInsets.zero,
-                        itemCount: sizes.length,
-                        itemBuilder: (context, index) {
-                          double iconSize = 0;
-                          if (sizes[index] == 'Small') {
-                            iconSize = 40;
-                          } else if (sizes[index] == 'Medium') {
-                            iconSize = 50;
-                          } else if (sizes[index] == 'Large') {
-                            iconSize = 60;
-                          }
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  size = sizes[index];
-                                });
-                              },
-                              child: Icon(
-                                Icons.coffee_rounded,
-                                size: iconSize,
-                                color: sizes[index] == size ? Colors.black : Colors.black.withValues(alpha: 0.2),
+                    if (widget.category != 'Breakfast')
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20, bottom: 5),
+                        child: Text(
+                          'Size',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    if (widget.category != 'Breakfast')
+                      SizedBox(
+                        height: 60,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          padding: EdgeInsets.zero,
+                          itemCount: sizes.length,
+                          itemBuilder: (context, index) {
+                            double iconSize = 0;
+                            if (sizes[index] == 'Small') {
+                              iconSize = 40;
+                            } else if (sizes[index] == 'Medium') {
+                              iconSize = 50;
+                            } else if (sizes[index] == 'Large') {
+                              iconSize = 60;
+                            }
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    size = sizes[index];
+                                  });
+                                },
+                                child: Icon(
+                                  Icons.coffee_rounded,
+                                  size: iconSize,
+                                  color: sizes[index] == size ? Colors.black : Colors.black.withValues(alpha: 0.2),
+                                ),
                               ),
+                            );
+                          },
+                        ),
+                      ),
+                    if (widget.category != 'Breakfast')
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20, bottom: 5),
+                        child: Text(
+                          'Sugar (In Cubes)',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    if (widget.category != 'Breakfast')
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                sugar = 'none';
+                              });
+                            },
+                            child: Icon(
+                              Icons.cancel_rounded,
+                              size: 35,
+                              color: sugar == 'none' ? Colors.black : Colors.black.withValues(alpha: 0.2),
                             ),
-                          );
-                        },
+                          ),
+                          SizedBox(width: 20),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                sugar = '1 Cube';
+                              });
+                            },
+                            child: Icon(
+                              CupertinoIcons.cube_fill,
+                              size: 35,
+                              color: sugar == '1 Cube' ? Colors.black : Colors.black.withValues(alpha: 0.2),
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                sugar = '2 Cubes';
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  CupertinoIcons.cube_fill,
+                                  size: 30,
+                                  color: sugar == '2 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
+                                ),
+                                Icon(
+                                  CupertinoIcons.cube_fill,
+                                  size: 30,
+                                  color: sugar == '2 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                sugar = '3 Cubes';
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  CupertinoIcons.cube_fill,
+                                  size: 25,
+                                  color: sugar == '3 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
+                                ),
+                                Icon(
+                                  CupertinoIcons.cube_fill,
+                                  size: 25,
+                                  color: sugar == '3 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
+                                ),
+                                Icon(
+                                  CupertinoIcons.cube_fill,
+                                  size: 25,
+                                  color: sugar == '3 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      'Sugar (In Cubes)',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              sugar = 'none';
-                            });
-                          },
-                          child: Icon(
-                            Icons.cancel_rounded,
-                            size: 35,
-                            color: sugar == 'none' ? Colors.black : Colors.black.withValues(alpha: 0.2),
-                          ),
-                        ),
-                        SizedBox(width: 20),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              sugar = '1 Cube';
-                            });
-                          },
-                          child: Icon(
-                            CupertinoIcons.cube_fill,
-                            size: 35,
-                            color: sugar == '1 Cube' ? Colors.black : Colors.black.withValues(alpha: 0.2),
-                          ),
-                        ),
-                        SizedBox(width: 20),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              sugar = '2 Cubes';
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                CupertinoIcons.cube_fill,
-                                size: 30,
-                                color: sugar == '2 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
-                              ),
-                              Icon(
-                                CupertinoIcons.cube_fill,
-                                size: 30,
-                                color: sugar == '2 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: 20),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              sugar = '3 Cubes';
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                CupertinoIcons.cube_fill,
-                                size: 25,
-                                color: sugar == '3 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
-                              ),
-                              Icon(
-                                CupertinoIcons.cube_fill,
-                                size: 25,
-                                color: sugar == '3 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
-                              ),
-                              Icon(
-                                CupertinoIcons.cube_fill,
-                                size: 25,
-                                color: sugar == '3 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),
@@ -330,16 +343,27 @@ class _ItemDetailState extends State<ItemDetail> {
             padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
             child: InkWell(
               onTap: () async {
-                controller.cartItems.add({
-                  "Id": widget.id,
-                  "Size": size,
-                  "Sugar": sugar,
-                  "Quantity": quantity,
-                  "Item Name": widget.itemName,
-                  'Category': widget.category,
-                  "Price": widget.price,
-                  "Total Price": totalPrice,
-                });
+                if (widget.category == 'Breakfast') {
+                  controller.cartItems.add({
+                    "Id": widget.id,
+                    "Quantity": quantity,
+                    "Item Name": widget.itemName,
+                    'Category': widget.category,
+                    "Price": widget.price,
+                    "Total Price": totalPrice,
+                  });
+                } else {
+                  controller.cartItems.add({
+                    "Id": widget.id,
+                    "Size": size,
+                    "Sugar": sugar,
+                    "Quantity": quantity,
+                    "Item Name": widget.itemName,
+                    'Category': widget.category,
+                    "Price": widget.price,
+                    "Total Price": totalPrice,
+                  });
+                }
                 Get.back();
               },
               borderRadius: BorderRadius.circular(10),

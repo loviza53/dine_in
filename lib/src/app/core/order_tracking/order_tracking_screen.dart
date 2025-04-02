@@ -329,10 +329,11 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                                   return Padding(
                                     padding: const EdgeInsets.only(bottom: 10),
                                     child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            "${orderSnapshot['Items'][index]['Item Name']} ${orderSnapshot['Items'][index]['Size']} ${orderSnapshot['Items'][index]['Quantity']}x",
+                                            "${orderSnapshot['Items'][index]['Item Name']}${orderSnapshot['Items'][index]['Size'] == null ? '' : ' ${orderSnapshot['Items'][index]['Size']}'} ${orderSnapshot['Items'][index]['Quantity']}x${orderSnapshot['Items'][index]['Sugar'] == null ? '' : '\nSugar: ${orderSnapshot['Items'][index]['Sugar']}'}",
                                             style: TextStyle(
                                               fontSize: 14,
                                             ),

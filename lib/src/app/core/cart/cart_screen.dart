@@ -102,9 +102,9 @@ class _CartScreenState extends State<CartScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        controller.cartItems[index]['Item Name'],
+                                        '${controller.cartItems[index]['Item Name']}${controller.cartItems[index]['Size'] == null ? '' : ', ${controller.cartItems[index]['Size']}\n${controller.cartItems[index]['Sugar'] == null ? '' : 'Sugar: ${controller.cartItems[index]['Sugar']}'}'}',
                                         style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 14,
                                         ),
                                       ),
                                       Text(

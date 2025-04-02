@@ -249,6 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     itemName: itemSnapshot['Item Name'],
                                     price: itemSnapshot['Price'],
                                     category: itemSnapshot['Category'],
+                                    description: itemSnapshot['Description'],
                                   ),
                                 ),
                                 borderRadius: BorderRadius.circular(15),

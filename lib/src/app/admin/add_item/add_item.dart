@@ -14,7 +14,7 @@ class AddItem extends StatefulWidget {
 
 class _AddItemState extends State<AddItem> {
   RxBool isLoading = false.obs;
-  String categoryValue = categories.first;
+  RxString category = categories.first.obs;
 
   final formKey = GlobalKey<FormState>();
 
@@ -131,60 +131,77 @@ class _AddItemState extends State<AddItem> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Description (Optional)',
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      TextFormField(
-                        controller: descriptionController,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                        ),
-                        maxLines: 3,
-                        decoration: InputDecoration(
-                          filled: true,
-                          isCollapsed: true,
-                          hintText: 'Item Details',
-                          hintStyle: TextStyle(
-                            color: Colors.black.withValues(alpha: 0.2),
-                          ),
-                          fillColor: filledTextFieldColor,
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.transparent,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: focusBorderColor,
-                              width: 1,
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: Colors.red,
-                              width: 1,
-                            ),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: Colors.red,
-                              width: 1,
-                            ),
-                          ),
-                        ),
-                      ),
+                      Obx(() {
+                        if (category.value == 'Breakfast') {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 20),
+                              const Text(
+                                'Description',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              TextFormField(
+                                controller: descriptionController,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                ),
+                                maxLines: 3,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  isCollapsed: true,
+                                  hintText: 'Item Details',
+                                  hintStyle: TextStyle(
+                                    color: Colors.black.withValues(alpha: 0.2),
+                                  ),
+                                  fillColor: filledTextFieldColor,
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Colors.transparent,
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: focusBorderColor,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: Colors.red,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: Colors.red,
+                                      width: 1,
+                                    ),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter description';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ],
+                          );
+                        } else  {
+                          return SizedBox();
+                        }
+                      },),
                       const SizedBox(height: 20),
                       const Text(
                         'Price (PKR)',
@@ -273,7 +290,7 @@ class _AddItemState extends State<AddItem> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  categoryValue,
+                                  category.value,
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 14,
@@ -289,7 +306,7 @@ class _AddItemState extends State<AddItem> {
                         ),
                         onSelected: (String? value) {
                           setState(() {
-                            categoryValue = value!;
+                            category.value = value!;
                           });
                         },
                         itemBuilder: (BuildContext context) {
@@ -359,7 +376,7 @@ class _AddItemState extends State<AddItem> {
                             isLoading.value = true;
                             await itemCollection.add({
                               'Item Name': itemNameController.text,
-                              'Category': categoryValue,
+                              'Category': category.value,
                               'Description': descriptionController.text,
                               'Price': priceController.text.trim(),
                               'Status': 'available',
@@ -367,7 +384,7 @@ class _AddItemState extends State<AddItem> {
                               itemNameController.clear();
                               descriptionController.clear();
                               priceController.clear();
-                              categoryValue = categories.first;
+                              category.value = categories.first;
                             });
                             isLoading.value = false;
                             Get.back();

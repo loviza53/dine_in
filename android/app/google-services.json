@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "751065510115",
-    "project_id": "dine-in-25028",
-    "storage_bucket": "dine-in-25028.firebasestorage.app"
+    "project_number": "358860614718",
+    "project_id": "turf-property-spotter",
+    "storage_bucket": "turf-property-spotter.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:751065510115:android:646a265d64c6013d6a95d6",
+        "mobilesdk_app_id": "1:358860614718:android:86b8762c5c908d9e89356f",
         "android_client_info": {
           "package_name": "com.example.dine_in"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA7xfb0IAGavS-jqUrWeXtRhbq2nI5YwhI"
+          "current_key": "AIzaSyBKrY7WAbwUpl1afHYTyUq-qV9rS_VRw2o"
         }
       ],
       "services": {

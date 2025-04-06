@@ -1,9 +1,12 @@
+import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:dine_in/src/constants/colors.dart';
 import 'package:dine_in/src/constants/values.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class AddItem extends StatefulWidget {
   const AddItem({super.key});
@@ -13,6 +16,7 @@ class AddItem extends StatefulWidget {
 }
 
 class _AddItemState extends State<AddItem> {
+  File? selectedImage;
   RxBool isLoading = false.obs;
   RxString category = categories.first.obs;
 
@@ -23,6 +27,16 @@ class _AddItemState extends State<AddItem> {
   TextEditingController priceController = TextEditingController();
 
   final itemCollection = FirebaseFirestore.instance.collection('Items');
+  final itemStorageReference = FirebaseStorage.instance.ref().child('ItemImages/${DateTime.now()}.jpg');
+
+  void pickImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        selectedImage = File(image.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +87,58 @@ class _AddItemState extends State<AddItem> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Center(
+                        child: GestureDetector(
+                          onTap: () async {
+                            pickImage();
+                          },
+                          child: LayoutBuilder(
+                            builder: (BuildContext context, BoxConstraints constraints) {
+                              double containerWidth = constraints.maxWidth;
+                              double containerHeight = constraints.maxWidth / 1.8;
+                              return Container(
+                                width: containerWidth,
+                                height: containerHeight,
+                                decoration: BoxDecoration(
+                                  color: filledTextFieldColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    width: 0.1,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: selectedImage != null
+                                      ? Image.file(
+                                          selectedImage!,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.upload_sharp,
+                                              color: buttonColor,
+                                              size: 50,
+                                            ),
+                                            Text(
+                                              'Upload Item Image',
+                                              style: TextStyle(
+                                                color: Colors.black.withValues(alpha: 0.4),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                       const Text(
                         'Item Name',
                         style: TextStyle(
@@ -131,77 +197,79 @@ class _AddItemState extends State<AddItem> {
                           return null;
                         },
                       ),
-                      Obx(() {
-                        if (category.value == 'Breakfast') {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 20),
-                              const Text(
-                                'Description',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              TextFormField(
-                                controller: descriptionController,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                ),
-                                maxLines: 3,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  isCollapsed: true,
-                                  hintText: 'Item Details',
-                                  hintStyle: TextStyle(
-                                    color: Colors.black.withValues(alpha: 0.2),
-                                  ),
-                                  fillColor: filledTextFieldColor,
-                                  contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: focusBorderColor,
-                                      width: 1,
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: Colors.red,
-                                      width: 1,
-                                    ),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: Colors.red,
-                                      width: 1,
-                                    ),
+                      Obx(
+                        () {
+                          if (category.value == 'Breakfast') {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 20),
+                                const Text(
+                                  'Description',
+                                  style: TextStyle(
+                                    color: Colors.black,
                                   ),
                                 ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter description';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ],
-                          );
-                        } else  {
-                          return SizedBox();
-                        }
-                      },),
+                                const SizedBox(height: 10),
+                                TextFormField(
+                                  controller: descriptionController,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                  ),
+                                  maxLines: 3,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    isCollapsed: true,
+                                    hintText: 'Item Details',
+                                    hintStyle: TextStyle(
+                                      color: Colors.black.withValues(alpha: 0.2),
+                                    ),
+                                    fillColor: filledTextFieldColor,
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Colors.transparent,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: focusBorderColor,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: Colors.red,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: Colors.red,
+                                        width: 1,
+                                      ),
+                                    ),
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter description';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ],
+                            );
+                          } else {
+                            return SizedBox();
+                          }
+                        },
+                      ),
                       const SizedBox(height: 20),
                       const Text(
                         'Price (PKR)',
@@ -374,18 +442,24 @@ class _AddItemState extends State<AddItem> {
                         onPressed: () async {
                           if (formKey.currentState!.validate()) {
                             isLoading.value = true;
-                            await itemCollection.add({
-                              'Item Name': itemNameController.text,
-                              'Category': category.value,
-                              'Description': descriptionController.text,
-                              'Price': priceController.text.trim(),
-                              'Status': 'available',
-                            }).then((value) {
-                              itemNameController.clear();
-                              descriptionController.clear();
-                              priceController.clear();
-                              category.value = categories.first;
-                            });
+                            if (selectedImage != null) {
+                              await itemStorageReference.putFile(selectedImage!).then((value) async {
+                                final imageUrl = await itemStorageReference.getDownloadURL();
+                                await itemCollection.add({
+                                  'Item Name': itemNameController.text,
+                                  'Category': category.value,
+                                  'Description': descriptionController.text,
+                                  'Price': priceController.text.trim(),
+                                  'Image Url': imageUrl,
+                                  'Status': 'available',
+                                }).then((value) {
+                                  itemNameController.clear();
+                                  descriptionController.clear();
+                                  priceController.clear();
+                                  category.value = categories.first;
+                                });
+                              });
+                            }
                             isLoading.value = false;
                             Get.back();
                           }

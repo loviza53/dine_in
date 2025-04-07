@@ -108,7 +108,7 @@ class _AddItemState extends State<AddItem> {
                                   ),
                                 ),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5),
+                                  borderRadius: BorderRadius.circular(10),
                                   child: selectedImage != null
                                       ? Image.file(
                                           selectedImage!,

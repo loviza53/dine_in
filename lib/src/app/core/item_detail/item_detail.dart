@@ -12,6 +12,7 @@ class ItemDetail extends StatefulWidget {
     required this.itemName,
     required this.price,
     required this.category,
+    required this.imageURL,
     required this.description,
   });
 
@@ -19,6 +20,7 @@ class ItemDetail extends StatefulWidget {
   final String itemName;
   final String price;
   final String category;
+  final String imageURL;
   final String description;
 
   @override
@@ -89,11 +91,55 @@ class _ItemDetailState extends State<ItemDetail> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 20),
                     Center(
-                      child: const Icon(
-                        Icons.coffee_rounded,
-                        size: 150,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: LayoutBuilder(
+                          builder: (BuildContext context, BoxConstraints constraints) {
+                            double containerWidth = constraints.maxWidth / 1.8;
+                            return Container(
+                              height: containerWidth,
+                              width: containerWidth,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: secondaryColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.brown.withValues(alpha: 0.15),
+                                    spreadRadius: 0,
+                                    blurRadius: 6,
+                                    offset: const Offset(4, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Image.network(
+                                widget.imageURL,
+                                fit: BoxFit.cover,
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Container(
+                                    height: containerWidth,
+                                    width: containerWidth,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade200,
+                                    ),
+                                  );
+                                },
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    height: containerWidth,
+                                    width: containerWidth,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade200,
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                     SizedBox(height: 40),
@@ -348,6 +394,7 @@ class _ItemDetailState extends State<ItemDetail> {
                     "Id": widget.id,
                     "Quantity": quantity,
                     "Item Name": widget.itemName,
+                    "Image URL": widget.imageURL,
                     'Category': widget.category,
                     "Price": widget.price,
                     "Total Price": totalPrice,
@@ -359,6 +406,7 @@ class _ItemDetailState extends State<ItemDetail> {
                     "Sugar": sugar,
                     "Quantity": quantity,
                     "Item Name": widget.itemName,
+                    "Image URL": widget.imageURL,
                     'Category': widget.category,
                     "Price": widget.price,
                     "Total Price": totalPrice,

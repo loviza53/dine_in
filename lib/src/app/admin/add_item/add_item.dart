@@ -94,7 +94,7 @@ class _AddItemState extends State<AddItem> {
                           },
                           child: LayoutBuilder(
                             builder: (BuildContext context, BoxConstraints constraints) {
-                              double containerWidth = constraints.maxWidth;
+                              double containerWidth = constraints.maxWidth / 1.8;
                               double containerHeight = constraints.maxWidth / 1.8;
                               return Container(
                                 width: containerWidth,
@@ -419,19 +419,19 @@ class _AddItemState extends State<AddItem> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
-                                width: 10,
-                                height: 10,
+                                height: 15,
+                                width: 15,
                                 child: CircularProgressIndicator(
-                                  color: Colors.black,
+                                  color: Colors.white,
+                                  strokeWidth: 2,
                                 ),
                               ),
                               SizedBox(width: 10),
                               Text(
                                 'Loading...',
                                 style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.white,
                                 ),
                               ),
                             ],
@@ -450,18 +450,18 @@ class _AddItemState extends State<AddItem> {
                                   'Category': category.value,
                                   'Description': descriptionController.text,
                                   'Price': priceController.text.trim(),
-                                  'Image Url': imageUrl,
+                                  'Image URL': imageUrl,
                                   'Status': 'available',
                                 }).then((value) {
                                   itemNameController.clear();
                                   descriptionController.clear();
                                   priceController.clear();
                                   category.value = categories.first;
+                                  Get.back();
                                 });
                               });
                             }
                             isLoading.value = false;
-                            Get.back();
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -473,8 +473,8 @@ class _AddItemState extends State<AddItem> {
                         child: const Text(
                           'Next',
                           style: TextStyle(
-                            color: Colors.black,
                             fontSize: 16,
+                            color: Colors.white,
                           ),
                         ),
                       ),

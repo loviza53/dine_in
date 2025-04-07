@@ -89,12 +89,44 @@ class _CartScreenState extends State<CartScreen> {
                             children: [
                               Row(
                                 children: [
-                                  Container(
-                                    height: 50,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                      color: accentColor.withValues(alpha: 0.5),
-                                      borderRadius: BorderRadius.circular(25),
+                                  // Container(
+                                  //   height: 50,
+                                  //   width: 50,
+                                  //   decoration: BoxDecoration(
+                                  //     color: accentColor.withValues(alpha: 0.5),
+                                  //     borderRadius: BorderRadius.circular(25),
+                                  //   ),
+                                  // ),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(5),
+                                    child: SizedBox(
+                                      height: 50,
+                                      width: 50,
+                                      child: Image.network(
+                                        controller.cartItems[index]['Image URL'],
+                                        fit: BoxFit.cover,
+                                        loadingBuilder: (context, child, loadingProgress) {
+                                          if (loadingProgress == null) return child;
+                                          return Container(
+                                            height: 50,
+                                            width: 50,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey.shade200,
+                                            ),
+                                          );
+                                        },
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Container(
+                                            height: 50,
+                                            width: 50,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey.shade200,
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                                   SizedBox(width: 20),

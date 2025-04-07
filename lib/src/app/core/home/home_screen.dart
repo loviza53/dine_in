@@ -232,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           return GridView.builder(
                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              mainAxisExtent: 200,
+                              mainAxisExtent: 267,
                               crossAxisSpacing: 15,
                               mainAxisSpacing: 15,
                             ),
@@ -249,11 +249,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     itemName: itemSnapshot['Item Name'],
                                     price: itemSnapshot['Price'],
                                     category: itemSnapshot['Category'],
+                                    imageURL: itemSnapshot['Image URL'],
                                     description: itemSnapshot['Description'],
                                   ),
                                 ),
                                 borderRadius: BorderRadius.circular(15),
                                 child: Container(
+                                  alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     color: secondaryColor,
                                     borderRadius: BorderRadius.circular(15),
@@ -269,14 +271,60 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const Icon(
-                                        Icons.coffee_rounded,
-                                        size: 80,
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(15),
+                                          topLeft: Radius.circular(15),
+                                        ),
+                                        child: LayoutBuilder(
+                                          builder: (BuildContext context, BoxConstraints constraints) {
+                                            double containerWidth = constraints.maxWidth;
+                                            return SizedBox(
+                                              height: containerWidth,
+                                              width: containerWidth,
+                                              child: Image.network(
+                                                itemSnapshot['Image URL'],
+                                                fit: BoxFit.cover,
+                                                loadingBuilder: (context, child, loadingProgress) {
+                                                  if (loadingProgress != null) return child;
+                                                  return Container(
+                                                    height: containerWidth,
+                                                    width: containerWidth,
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white.withValues(alpha: 0.2),
+                                                    ),
+                                                  );
+                                                },
+                                                errorBuilder: (context, error, stackTrace) {
+                                                  return Container(
+                                                    height: containerWidth,
+                                                    width: containerWidth,
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white.withValues(alpha: 0.2),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
+                                        ),
                                       ),
-                                      const SizedBox(height: 10),
-                                      Text(
-                                        itemSnapshot['Item Name'],
-                                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
+                                          child: Text(
+                                            itemSnapshot['Item Name'],
+                                            maxLines: 2,
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w300,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),

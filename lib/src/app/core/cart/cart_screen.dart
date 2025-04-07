@@ -89,14 +89,6 @@ class _CartScreenState extends State<CartScreen> {
                             children: [
                               Row(
                                 children: [
-                                  // Container(
-                                  //   height: 50,
-                                  //   width: 50,
-                                  //   decoration: BoxDecoration(
-                                  //     color: accentColor.withValues(alpha: 0.5),
-                                  //     borderRadius: BorderRadius.circular(25),
-                                  //   ),
-                                  // ),
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(5),
                                     child: SizedBox(

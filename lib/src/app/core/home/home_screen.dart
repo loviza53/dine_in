@@ -286,7 +286,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 itemSnapshot['Image URL'],
                                                 fit: BoxFit.cover,
                                                 loadingBuilder: (context, child, loadingProgress) {
-                                                  if (loadingProgress != null) return child;
+                                                  if (loadingProgress == null) return child;
                                                   return Container(
                                                     height: containerWidth,
                                                     width: containerWidth,

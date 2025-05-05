@@ -7,6 +7,6 @@ const buttonColor = Color(0xFFD2B181);
 const surfaceColor = Color(0xFFFDF6EC);
 
 const focusBorderColor = Color(0xFFEAC796);
-const filledTextFieldColor = Color(0xFFFFE9D7);
+const filledTextFieldColor = Color(0xFF5F4624);
 
 const selectedOptionColor = Color(0xFFF3B35B);

@@ -263,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Padding(
                         padding: const EdgeInsets.all(15),
                         child: StreamBuilder(
-                          stream: itemCollection.where('Category', isEqualTo: category).snapshots(),
+                          stream: itemCollection.where('Category', isEqualTo: category).where('Status', isEqualTo: 'available').snapshots(),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return GridView.builder(

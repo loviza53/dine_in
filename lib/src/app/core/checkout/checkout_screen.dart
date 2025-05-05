@@ -64,6 +64,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: accentColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +92,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     height: 35,
                     width: 35,
                     decoration: BoxDecoration(
-                      color: accentColor,
+                      color: buttonColor,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Icon(
@@ -108,13 +109,37 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    decoration: BoxDecoration(
+                      color: surfaceColor,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: accentColor,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Text(
+                        'Payment Method',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(15),
                     child: Container(
                       width: double.infinity,
                       padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 5),
                       decoration: BoxDecoration(
-                        color: accentColor.withValues(alpha: 0.5),
+                        color: surfaceColor,
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: ListView.builder(
@@ -154,7 +179,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       width: double.infinity,
                       padding: EdgeInsets.all(15),
                       decoration: BoxDecoration(
-                        color: accentColor.withValues(alpha: 0.5),
+                        color: surfaceColor,
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Column(
@@ -178,25 +203,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             ],
                           ),
                           SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  'Delivery fee',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                'PKR $deliveryFee',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 5),
                           Divider(),
                           SizedBox(height: 5),
                           Row(
@@ -210,7 +216,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 ),
                               ),
                               Text(
-                                "PKR ${totalBill! + deliveryFee}",
+                                "PKR $totalBill!",
                                 style: TextStyle(
                                   fontSize: 14,
                                 ),
@@ -227,7 +233,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       width: double.infinity,
                       padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
                       decoration: BoxDecoration(
-                        color: accentColor.withValues(alpha: 0.5),
+                        color: surfaceColor,
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Row(
@@ -240,7 +246,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(15),
+                    padding: EdgeInsets.only(top: 15, left: 15, right:15),
                     child: Text(
                       'Select table',
                       style: TextStyle(
@@ -250,7 +256,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                     child: StreamBuilder(
                       stream: orderCollection.where('Status', whereNotIn: ['Delivered', 'Cancelled']).snapshots(),
                       builder: (context, snapshot) {
@@ -258,7 +264,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           final RxList bookedTables = snapshot.data!.docs.map((e) => e['Table']).toSet().toList().obs;
                           return GridView.builder(
                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
+                              crossAxisCount: 2,
                               crossAxisSpacing: 15,
                               mainAxisSpacing: 15,
                               mainAxisExtent: 40,
@@ -273,11 +279,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   return Container(
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
-                                      color: Colors.black.withValues(alpha: 0.2),
+                                      color: Colors.black.withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Text(
                                       tables[index],
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: Colors.black.withValues(alpha: 0.4),
                                         fontSize: 14,
@@ -293,11 +300,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     child: Container(
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
-                                        color: selectedTable.value == tables[index] ? selectedOptionColor : accentColor.withValues(alpha: 0.5),
+                                        color: selectedTable.value == tables[index] ? selectedOptionColor : surfaceColor,
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Text(
                                         tables[index],
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(
                                           color: Colors.black.withValues(alpha: 0.8),
                                           fontSize: 14,
@@ -325,7 +333,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               return Container(
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  color: accentColor.withValues(alpha: 0.15),
+                                  color: Colors.black.withValues(alpha: 0.05),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               );
@@ -347,7 +355,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   height: 45,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.2),
+                    color: Colors.black.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
@@ -370,7 +378,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     width: double.infinity,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: buttonColor,
+                      color: surfaceColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Row(
@@ -380,7 +388,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           height: 15,
                           width: 15,
                           child: CircularProgressIndicator(
-                            color: Colors.white,
+                            color: Colors.black,
                             strokeWidth: 2,
                           ),
                         ),
@@ -388,7 +396,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         Text(
                           'Placing Order...',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 16,
                           ),
                         ),
@@ -410,7 +418,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           'Items': cartController.cartItems,
                           'Table': selectedTable.value,
                           'Time': FieldValue.serverTimestamp(),
-                          'Total Bill': totalBill! + deliveryFee,
+                          'Total Bill': totalBill!,
                           'Status': 'Pending',
                         }).then((value) async {
                           DocumentSnapshot orderSnapshot = await value.get();
@@ -433,7 +441,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       height: 45,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: buttonColor,
+                        color: surfaceColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
@@ -441,7 +449,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           'Place Order',
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                         ),
                       ),

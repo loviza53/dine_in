@@ -32,6 +32,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: accentColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +60,7 @@ class _CartScreenState extends State<CartScreen> {
                     height: 35,
                     width: 35,
                     decoration: BoxDecoration(
-                      color: accentColor,
+                      color: buttonColor,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Icon(
@@ -75,6 +76,30 @@ class _CartScreenState extends State<CartScreen> {
             Expanded(
               child: Column(
                 children: [
+                  Container(
+                    height: 50,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    decoration: BoxDecoration(
+                      color: surfaceColor,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: accentColor,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Text(
+                        'Order Summary',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(15),
                     child: ListView.builder(
@@ -144,7 +169,7 @@ class _CartScreenState extends State<CartScreen> {
                               Container(
                                 height: 40,
                                 decoration: BoxDecoration(
-                                  color: accentColor.withValues(alpha: 0.5),
+                                  color: surfaceColor,
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Row(
@@ -207,7 +232,7 @@ class _CartScreenState extends State<CartScreen> {
                       width: double.infinity,
                       padding: EdgeInsets.all(15),
                       decoration: BoxDecoration(
-                        color: accentColor.withValues(alpha: 0.5),
+                        color: surfaceColor,
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Column(
@@ -231,25 +256,6 @@ class _CartScreenState extends State<CartScreen> {
                             ],
                           ),
                           SizedBox(height: 5),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  'Delivery fee',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                'PKR 100',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 5),
                           Divider(),
                           SizedBox(height: 5),
                           Obx(
@@ -264,7 +270,7 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                 ),
                                 Text(
-                                  "PKR ${totalBill + deliveryFee}",
+                                  "PKR $totalBill",
                                   style: TextStyle(
                                     fontSize: 14,
                                   ),
@@ -289,7 +295,7 @@ class _CartScreenState extends State<CartScreen> {
                   height: 45,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: buttonColor,
+                    color: surfaceColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
@@ -297,7 +303,7 @@ class _CartScreenState extends State<CartScreen> {
                       'Go to Checkout',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                   ),

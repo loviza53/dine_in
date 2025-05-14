@@ -68,24 +68,121 @@ class _StaffMembersScreenState extends State<StaffMembersScreen> {
                   ],
                 ),
               ),
-              StreamBuilder(
-                stream: staffMemberCollection.snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        final staffMemberSnapshot = snapshot.data!.docs[index];
-                        return ListTile(
-                          title: Text(staffMemberSnapshot['First Name']),
-                          subtitle: Text(staffMemberSnapshot['Last Name']),
-                        );
-                      },
-                    );
-                  } else {
-                    return SizedBox();
-                  }
-                },
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: StreamBuilder(
+                  stream: staffMemberCollection.snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          final staffMemberSnapshot = snapshot.data!.docs[index];
+                          return Container(
+                            padding: const EdgeInsets.all(10),
+                            margin: EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              color: secondaryColor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${staffMemberSnapshot['First Name']} ${staffMemberSnapshot['Last Name']}',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                    children: [
+                                      const TextSpan(
+                                        text: 'CNIC Number: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '${staffMemberSnapshot['CNIC Number']}',
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                    children: [
+                                      const TextSpan(
+                                        text: 'Role: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '${staffMemberSnapshot['Role']}',
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                    children: [
+                                      const TextSpan(
+                                        text: 'Start Time: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '${staffMemberSnapshot['Shift Start Time']}',
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                    children: [
+                                      const TextSpan(
+                                        text: 'End Time: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '${staffMemberSnapshot['Shift End Time']}',
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return SizedBox();
+                    }
+                  },
+                ),
               ),
             ],
           ),

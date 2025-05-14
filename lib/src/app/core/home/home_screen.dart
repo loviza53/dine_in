@@ -263,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Padding(
                         padding: const EdgeInsets.all(15),
                         child: StreamBuilder(
-                          stream: itemCollection.where('Category', isEqualTo: category).where('Status', isEqualTo: 'available').snapshots(),
+                          stream: itemCollection.where('Category', isEqualTo: category).orderBy('Status', descending: false).snapshots(),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return GridView.builder(
@@ -279,19 +279,97 @@ class _HomeScreenState extends State<HomeScreen> {
                                 itemCount: snapshot.data!.docs.length,
                                 itemBuilder: (context, index) {
                                   final itemSnapshot = snapshot.data!.docs[index];
-                                  return InkWell(
-                                    onTap: () => Get.to(
-                                      () => ItemDetail(
-                                        id: itemSnapshot.id,
-                                        itemName: itemSnapshot['Item Name'],
-                                        price: itemSnapshot['Price'],
-                                        category: itemSnapshot['Category'],
-                                        imageURL: itemSnapshot['Image URL'],
-                                        description: itemSnapshot['Description'],
+                                  if (itemSnapshot['Status'] == 'available') {
+                                    return InkWell(
+                                      onTap: () => Get.to(
+                                        () => ItemDetail(
+                                          id: itemSnapshot.id,
+                                          itemName: itemSnapshot['Item Name'],
+                                          price: itemSnapshot['Price'],
+                                          category: itemSnapshot['Category'],
+                                          imageURL: itemSnapshot['Image URL'],
+                                          description: itemSnapshot['Description'],
+                                        ),
                                       ),
-                                    ),
-                                    borderRadius: BorderRadius.circular(15),
-                                    child: Container(
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: secondaryColor,
+                                          borderRadius: BorderRadius.circular(15),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.brown.withValues(alpha: 0.15),
+                                              spreadRadius: 0,
+                                              blurRadius: 6,
+                                              offset: const Offset(4, 4),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(15),
+                                                topLeft: Radius.circular(15),
+                                              ),
+                                              child: LayoutBuilder(
+                                                builder: (BuildContext context, BoxConstraints constraints) {
+                                                  double containerWidth = constraints.maxWidth;
+                                                  return SizedBox(
+                                                    height: containerWidth,
+                                                    width: containerWidth,
+                                                    child: Image.network(
+                                                      itemSnapshot['Image URL'],
+                                                      fit: BoxFit.cover,
+                                                      loadingBuilder: (context, child, loadingProgress) {
+                                                        if (loadingProgress == null) return child;
+                                                        return Container(
+                                                          height: containerWidth,
+                                                          width: containerWidth,
+                                                          alignment: Alignment.center,
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.white.withValues(alpha: 0.2),
+                                                          ),
+                                                        );
+                                                      },
+                                                      errorBuilder: (context, error, stackTrace) {
+                                                        return Container(
+                                                          height: containerWidth,
+                                                          width: containerWidth,
+                                                          alignment: Alignment.center,
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.white.withValues(alpha: 0.2),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Padding(
+                                                padding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
+                                                child: Text(
+                                                  itemSnapshot['Item Name'],
+                                                  maxLines: 2,
+                                                  textAlign: TextAlign.center,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    return Container(
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
                                         color: secondaryColor,
@@ -305,68 +383,79 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                         ],
                                       ),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                      child: Stack(
                                         children: [
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(15),
-                                              topLeft: Radius.circular(15),
-                                            ),
-                                            child: LayoutBuilder(
-                                              builder: (BuildContext context, BoxConstraints constraints) {
-                                                double containerWidth = constraints.maxWidth;
-                                                return SizedBox(
-                                                  height: containerWidth,
-                                                  width: containerWidth,
-                                                  child: Image.network(
-                                                    itemSnapshot['Image URL'],
-                                                    fit: BoxFit.cover,
-                                                    loadingBuilder: (context, child, loadingProgress) {
-                                                      if (loadingProgress == null) return child;
-                                                      return Container(
-                                                        height: containerWidth,
-                                                        width: containerWidth,
-                                                        alignment: Alignment.center,
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.white.withValues(alpha: 0.2),
-                                                        ),
-                                                      );
-                                                    },
-                                                    errorBuilder: (context, error, stackTrace) {
-                                                      return Container(
-                                                        height: containerWidth,
-                                                        width: containerWidth,
-                                                        alignment: Alignment.center,
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.white.withValues(alpha: 0.2),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Padding(
-                                              padding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
-                                              child: Text(
-                                                itemSnapshot['Item Name'],
-                                                maxLines: 2,
-                                                textAlign: TextAlign.center,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w300,
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius: BorderRadius.only(
+                                                  topRight: Radius.circular(15),
+                                                  topLeft: Radius.circular(15),
+                                                ),
+                                                child: LayoutBuilder(
+                                                  builder: (BuildContext context, BoxConstraints constraints) {
+                                                    double containerWidth = constraints.maxWidth;
+                                                    return SizedBox(
+                                                      height: containerWidth,
+                                                      width: containerWidth,
+                                                      child: Image.network(
+                                                        itemSnapshot['Image URL'],
+                                                        fit: BoxFit.cover,
+                                                        loadingBuilder: (context, child, loadingProgress) {
+                                                          if (loadingProgress == null) return child;
+                                                          return Container(
+                                                            height: containerWidth,
+                                                            width: containerWidth,
+                                                            alignment: Alignment.center,
+                                                            decoration: BoxDecoration(
+                                                              color: Colors.white.withValues(alpha: 0.2),
+                                                            ),
+                                                          );
+                                                        },
+                                                        errorBuilder: (context, error, stackTrace) {
+                                                          return Container(
+                                                            height: containerWidth,
+                                                            width: containerWidth,
+                                                            alignment: Alignment.center,
+                                                            decoration: BoxDecoration(
+                                                              color: Colors.white.withValues(alpha: 0.2),
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    );
+                                                  },
                                                 ),
                                               ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
+                                                  child: Text(
+                                                    itemSnapshot['Item Name'],
+                                                    maxLines: 2,
+                                                    textAlign: TextAlign.center,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.w300,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Container(
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey.shade300.withValues(alpha: 0.5),
+                                              borderRadius: BorderRadius.circular(15),
                                             ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  }
                                 },
                               );
                             } else {
@@ -381,7 +470,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 padding: EdgeInsets.zero,
                                 physics: NeverScrollableScrollPhysics(),
                                 itemCount: 6,
-                                // Repeat 3 times
                                 itemBuilder: (context, index) {
                                   return Container(
                                     decoration: BoxDecoration(

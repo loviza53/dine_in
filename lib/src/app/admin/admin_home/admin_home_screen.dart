@@ -1,5 +1,6 @@
 import 'package:dine_in/src/app/admin/add_staff/add_staff_screen.dart';
 import 'package:dine_in/src/app/admin/manage_items/manage_items_screen.dart';
+import 'package:dine_in/src/app/admin/staff_members/staff_members_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -80,104 +81,178 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15),
+                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                 child: Column(
                   children: [
-                    InkWell(
-                      onTap: () => Get.to(() => const AddItem()),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.add_circle,
-                              size: 26,
-                              color: surfaceColor,
-                            ),
-                            const SizedBox(width: 20),
-                            const Text(
-                              'Add Item',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w300,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () => Get.to(() => const AddItem()),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                              decoration: BoxDecoration(
+                                color: secondaryColor,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.add_circle,
+                                    size: 40,
+                                    color: Colors.black,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    'Add Item',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                        SizedBox(width: 15),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () => Get.to(() => const OrdersScreen()),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                              decoration: BoxDecoration(
+                                color: secondaryColor,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.emoji_food_beverage_rounded,
+                                    size: 40,
+                                    color: Colors.black,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    'Orders',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    InkWell(
-                      onTap: () => Get.to(() => const OrdersScreen()),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.emoji_food_beverage_rounded,
-                              size: 26,
-                              color: surfaceColor,
-                            ),
-                            const SizedBox(width: 20),
-                            const Text(
-                              'Orders',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w300,
+                    SizedBox(height: 15),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () => Get.to(() => const ManageItemsScreen()),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                              decoration: BoxDecoration(
+                                color: secondaryColor,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.emoji_food_beverage_rounded,
+                                    size: 40,
+                                    color: Colors.black,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    'Manage Items',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                        SizedBox(width: 15),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () => Get.to(() => const AddStaffScreen()),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                              decoration: BoxDecoration(
+                                color: secondaryColor,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.person_add_alt_1,
+                                    size: 40,
+                                    color: Colors.black,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    'Add Staff',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    InkWell(
-                      onTap: () => Get.to(() => const ManageItemsScreen()),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.emoji_food_beverage_rounded,
-                              size: 26,
-                              color: surfaceColor,
-                            ),
-                            const SizedBox(width: 20),
-                            const Text(
-                              'Manage Items',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w300,
+                    SizedBox(height: 15),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () => Get.to(() => const StaffMembersScreen()),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                              decoration: BoxDecoration(
+                                color: secondaryColor,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.people_rounded,
+                                    size: 40,
+                                    color: Colors.black,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    'Staff Members',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () => Get.to(() => const AddStaffScreen()),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.person_add_alt_1,
-                              size: 26,
-                              color: surfaceColor,
-                            ),
-                            const SizedBox(width: 20),
-                            const Text(
-                              'Add Staff',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                          ],
+                        SizedBox(width: 15),
+                        Expanded(
+                          child: SizedBox(),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),

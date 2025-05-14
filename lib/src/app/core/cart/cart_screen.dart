@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
-import 'package:dine_in/src/constants/values.dart';
 import 'package:dine_in/src/app/controllers/cart_controller.dart';
 import 'package:dine_in/src/app/core/checkout/checkout_screen.dart';
 
@@ -283,6 +282,20 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                 ],
+              ),
+            )
+          else
+            Expanded(
+              child: Center(
+                child: Text(
+                  'Cart is empty',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.black.withValues(alpha: 0.8),
+                  ),
+                ),
               ),
             ),
           if (controller.cartItems.isNotEmpty)

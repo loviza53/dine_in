@@ -90,7 +90,7 @@ class _SettingState extends State<Setting> {
                             Icon(
                               Icons.admin_panel_settings_rounded,
                               size: 26,
-                              color: surfaceColor,
+                              color: Colors.black,
                             ),
                             const SizedBox(width: 20),
                             const Text(

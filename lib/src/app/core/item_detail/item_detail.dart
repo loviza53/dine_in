@@ -1,7 +1,7 @@
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:dine_in/src/constants/colors.dart';
 import 'package:dine_in/src/constants/values.dart';
 import 'package:dine_in/src/app/controllers/cart_controller.dart';
@@ -445,6 +445,14 @@ class _ItemDetailState extends State<ItemDetail> {
                     height: 45,
                     width: double.infinity,
                     decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.brown.withValues(alpha: 0.15),
+                          spreadRadius: 0,
+                          blurRadius: 6,
+                          offset: const Offset(4, 4),
+                        ),
+                      ],
                       color: buttonColor,
                       borderRadius: BorderRadius.circular(10),
                     ),

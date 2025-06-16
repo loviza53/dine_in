@@ -441,6 +441,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       height: 45,
                       width: double.infinity,
                       decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.brown.withValues(alpha: 0.15),
+                            spreadRadius: 0,
+                            blurRadius: 6,
+                            offset: const Offset(4, 4),
+                          ),
+                        ],
                         color: surfaceColor,
                         borderRadius: BorderRadius.circular(10),
                       ),

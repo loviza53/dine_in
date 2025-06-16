@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
@@ -25,6 +26,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   final CartController cartController = Get.find<CartController>();
   final OrderController orderController = Get.find<OrderController>();
 
+  final currentUser = FirebaseAuth.instance.currentUser!.uid;
   final orderCollection = FirebaseFirestore.instance.collection('Orders');
 
   void orderTracking(String id) {
@@ -420,6 +422,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           'Time': FieldValue.serverTimestamp(),
                           'Total Bill': totalBill!,
                           'Status': 'Pending',
+                          'Customer ID': currentUser,
                         }).then((value) async {
                           DocumentSnapshot orderSnapshot = await value.get();
                           await memory.setString('Order ID', orderSnapshot.id);

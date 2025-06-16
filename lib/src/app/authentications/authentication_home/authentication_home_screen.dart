@@ -33,7 +33,7 @@ class _AuthenticationHomeScreenState extends State<AuthenticationHomeScreen> {
                       onPressed: () => Get.to(() => const LoginScreen()),
                       style: OutlinedButton.styleFrom(
                           side: const BorderSide(
-                            color: accentColor,
+                            color: buttonColor,
                             width: 2,
                           ),
                           shape: RoundedRectangleBorder(
@@ -42,7 +42,7 @@ class _AuthenticationHomeScreenState extends State<AuthenticationHomeScreen> {
                       child: const Text(
                         'LOG IN',
                         style: TextStyle(
-                          color: accentColor,
+                          color: buttonColor,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -57,7 +57,7 @@ class _AuthenticationHomeScreenState extends State<AuthenticationHomeScreen> {
                     child: ElevatedButton(
                       onPressed: () => Get.to(() => const AccountName()),
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: accentColor,
+                          backgroundColor: buttonColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           )),

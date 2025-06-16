@@ -13,6 +13,8 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
+  RxBool isPaid = false.obs;
+
   final orderCollection = FirebaseFirestore.instance.collection('Orders');
 
   @override
@@ -207,6 +209,24 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                     ],
                                   ),
                                   SizedBox(height: 10),
+                                  Obx(
+                                    () => Row(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            isPaid.value = !isPaid.value;
+                                          },
+                                          child: Icon(
+                                            Icons.check_box_rounded,
+                                            size: 25,
+                                            color: isPaid.value ? Colors.brown : Colors.black.withValues(alpha: 0.2),
+                                          ),
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text("Bill paid"),
+                                      ],
+                                    ),
+                                  ),
                                   Obx(
                                     () {
                                       if (isLoading.value) {

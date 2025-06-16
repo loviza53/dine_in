@@ -117,7 +117,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                           });
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: accentColor,
+                          backgroundColor: buttonColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),

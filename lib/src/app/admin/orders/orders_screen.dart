@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -14,7 +15,10 @@ class OrdersScreen extends StatefulWidget {
 
 class _OrdersScreenState extends State<OrdersScreen> {
   RxBool isPaid = false.obs;
+  int monthlyBill = 0;
 
+  final currentUser = FirebaseAuth.instance.currentUser!.uid;
+  final userCollection = FirebaseFirestore.instance.collection('Users');
   final orderCollection = FirebaseFirestore.instance.collection('Orders');
 
   @override
@@ -36,7 +40,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
           ),
           Column(
             children: [
-              SizedBox(height: MediaQuery.of(context).padding.top),
+              SizedBox(height: MediaQuery
+                  .of(context)
+                  .padding
+                  .top),
               Container(
                 height: 60,
                 width: double.infinity,
@@ -129,7 +136,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                         ],
                                       ),
                                       Obx(
-                                        () {
+                                            () {
                                           if (isLoading.value) {
                                             return Padding(
                                               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
@@ -178,7 +185,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              '${orderSnapshot['Items'][index]['Item Name']}${orderSnapshot['Items'][index]['Size'] == null ? '' : ' ${orderSnapshot['Items'][index]['Size']}'} ${orderSnapshot['Items'][index]['Quantity']}x${orderSnapshot['Items'][index]['Sugar'] == null ? '' : '\nSugar: ${orderSnapshot['Items'][index]['Sugar']}'}',
+                                              '${orderSnapshot['Items'][index]['Item Name']}${orderSnapshot['Items'][index]['Size'] == null
+                                                  ? ''
+                                                  : ' ${orderSnapshot['Items'][index]['Size']}'} ${orderSnapshot['Items'][index]['Quantity']}x${orderSnapshot['Items'][index]['Sugar'] == null
+                                                  ? ''
+                                                  : '\nSugar: ${orderSnapshot['Items'][index]['Sugar']}'}',
                                             ),
                                             Text(
                                               'PKR ${orderSnapshot['Items'][index]['Total Price']}',
@@ -210,25 +221,26 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   ),
                                   SizedBox(height: 10),
                                   Obx(
-                                    () => Row(
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            isPaid.value = !isPaid.value;
-                                          },
-                                          child: Icon(
-                                            Icons.check_box_rounded,
-                                            size: 25,
-                                            color: isPaid.value ? Colors.brown : Colors.black.withValues(alpha: 0.2),
-                                          ),
+                                        () =>
+                                        Row(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                isPaid.value = !isPaid.value;
+                                              },
+                                              child: Icon(
+                                                Icons.check_box_rounded,
+                                                size: 25,
+                                                color: isPaid.value ? Colors.brown : Colors.black.withValues(alpha: 0.2),
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Text("Bill paid"),
+                                          ],
                                         ),
-                                        SizedBox(width: 10),
-                                        Text("Bill paid"),
-                                      ],
-                                    ),
                                   ),
                                   Obx(
-                                    () {
+                                        () {
                                       if (isLoading.value) {
                                         return Row(
                                           mainAxisAlignment: MainAxisAlignment.end,
@@ -354,6 +366,20 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                               InkWell(
                                                 onTap: () async {
                                                   isLoading.value = true;
+                                                  if (!isPaid.value) {
+                                                    await userCollection.doc(currentUser).get().then((userSnapshot) async {
+                                                      if (userSnapshot.data()!.containsKey('Monthly Bill')) {
+                                                        monthlyBill = userSnapshot.data()!['Monthly Bill'] + orderSnapshot['Total Bill'];
+                                                        await userCollection.doc(currentUser).update({
+                                                          'Monthly Bill': monthlyBill,
+                                                        });
+                                                      } else {
+                                                        await userCollection.doc(currentUser).update({
+                                                          'Monthly Bill': orderSnapshot['Total Bill'],
+                                                        });
+                                                      }
+                                                    });
+                                                  }
                                                   await orderCollection.doc(orderSnapshot.id).update({
                                                     'Status': 'Delivered',
                                                     'Delivered Time': FieldValue.serverTimestamp(),

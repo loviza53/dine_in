@@ -340,12 +340,12 @@ class _ItemDetailState extends State<ItemDetail> {
                                   children: [
                                     Icon(
                                       CupertinoIcons.cube_fill,
-                                      size: 30,
+                                      size: 35,
                                       color: sugar == '2 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
                                     ),
                                     Icon(
                                       CupertinoIcons.cube_fill,
-                                      size: 30,
+                                      size: 35,
                                       color: sugar == '2 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
                                     ),
                                   ],
@@ -362,17 +362,17 @@ class _ItemDetailState extends State<ItemDetail> {
                                   children: [
                                     Icon(
                                       CupertinoIcons.cube_fill,
-                                      size: 25,
+                                      size: 35,
                                       color: sugar == '3 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
                                     ),
                                     Icon(
                                       CupertinoIcons.cube_fill,
-                                      size: 25,
+                                      size: 35,
                                       color: sugar == '3 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
                                     ),
                                     Icon(
                                       CupertinoIcons.cube_fill,
-                                      size: 25,
+                                      size: 35,
                                       color: sugar == '3 Cubes' ? Colors.black : Colors.black.withValues(alpha: 0.2),
                                     ),
                                   ],

@@ -111,7 +111,7 @@ class _SettingState extends State<Setting> {
                                   Text(
                                     '${snapshot.data!['Monthly Bill'].toString()} PKR',
                                     style: TextStyle(
-                                      fontSize: 38,
+                                      fontSize: 32,
                                       fontWeight: FontWeight.w300,
                                     ),
                                   ),

@@ -1,3 +1,5 @@
+import 'package:dine_in/src/app/authentications/authentication_home/authentication_home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -97,6 +99,30 @@ class _SettingState extends State<Setting> {
                               'Admin',
                               style: TextStyle(
                                 color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () async => await FirebaseAuth.instance.signOut().then((value) => Get.offAll(AuthenticationHomeScreen())),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.login_rounded,
+                              size: 26,
+                              color: Colors.red,
+                            ),
+                            const SizedBox(width: 20),
+                            const Text(
+                              'Log out',
+                              style: TextStyle(
+                                color: Colors.red,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w300,
                               ),

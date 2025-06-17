@@ -22,12 +22,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   int? totalBill;
   RxString selectedTable = ''.obs;
   RxBool isLoading = false.obs;
+  RxString deliveryPlace = 'Table'.obs;
+  RxString userType = userTypes.first.obs;
+  RxString office = offices.first.obs;
 
   final CartController cartController = Get.find<CartController>();
   final OrderController orderController = Get.find<OrderController>();
 
   final currentUser = FirebaseAuth.instance.currentUser!.uid;
   final orderCollection = FirebaseFirestore.instance.collection('Orders');
+  final userCollection = FirebaseFirestore.instance.collection('Users');
 
   void orderTracking(String id) {
     showModalBottomSheet(
@@ -60,6 +64,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   void initState() {
     totalBill = cartController.cartItems.map((e) => e['Total Price']).reduce((value, element) => value + element);
+    userCollection.doc(currentUser).get().then((userSnapshot) {
+      setState(() {
+        userType.value = userSnapshot['User Type'];
+      });
+    });
     super.initState();
   }
 
@@ -218,7 +227,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 ),
                               ),
                               Text(
-                                "PKR $totalBill!",
+                                "PKR $totalBill",
                                 style: TextStyle(
                                   fontSize: 14,
                                 ),
@@ -247,110 +256,223 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 15, left: 15, right:15),
-                    child: Text(
-                      'Select table',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w300,
+                  if (userType.value == 'Professor')
+                    Obx(
+                      () => InkWell(
+                        onTap: () {
+                          setState(() {
+                            if (deliveryPlace.value == 'Table') {
+                              deliveryPlace.value = 'Office';
+                            } else if (deliveryPlace.value == 'Office') {
+                              deliveryPlace.value = 'Table';
+                            }
+                          });
+                        },
+                        borderRadius: BorderRadius.circular(15),
+                        child: Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
+                          margin: EdgeInsets.symmetric(horizontal: 15),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.brown.withValues(alpha: 0.15),
+                                spreadRadius: 0,
+                                blurRadius: 6,
+                                offset: const Offset(4, 4),
+                              ),
+                            ],
+                            color: buttonColor,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Text(
+                            deliveryPlace.value == 'Table' ? 'Deliver to office' : 'Deliver to table',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                    child: StreamBuilder(
-                      stream: orderCollection.where('Status', whereNotIn: ['Delivered', 'Cancelled']).snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          final RxList bookedTables = snapshot.data!.docs.map((e) => e['Table']).toSet().toList().obs;
-                          return GridView.builder(
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 15,
-                              mainAxisSpacing: 15,
-                              mainAxisExtent: 40,
-                            ),
-                            shrinkWrap: true,
-                            padding: EdgeInsets.zero,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: tables.length,
-                            itemBuilder: (context, index) {
-                              return Obx(() {
-                                if (bookedTables.contains(tables[index])) {
-                                  return Container(
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black.withValues(alpha: 0.1),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Text(
-                                      tables[index],
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Colors.black.withValues(alpha: 0.4),
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  return InkWell(
-                                    onTap: () {
-                                      selectedTable.value = tables[index];
-                                    },
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Container(
+                  if (deliveryPlace.value == 'Table')
+                    Padding(
+                      padding: EdgeInsets.only(top: 15, left: 15, right: 15),
+                      child: Text(
+                        'Select table',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ),
+                  if (deliveryPlace.value == 'Table')
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      child: StreamBuilder(
+                        stream: orderCollection.where('Status', whereNotIn: ['Delivered', 'Cancelled']).snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            final RxList bookedTables = snapshot.data!.docs.map((e) => e['Table']).toSet().toList().obs;
+                            return GridView.builder(
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 15,
+                                mainAxisSpacing: 15,
+                                mainAxisExtent: 40,
+                              ),
+                              shrinkWrap: true,
+                              padding: EdgeInsets.zero,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: tables.length,
+                              itemBuilder: (context, index) {
+                                return Obx(() {
+                                  if (bookedTables.contains(tables[index])) {
+                                    return Container(
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
-                                        color: selectedTable.value == tables[index] ? selectedOptionColor : surfaceColor,
+                                        color: Colors.black.withValues(alpha: 0.1),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Text(
                                         tables[index],
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          color: Colors.black.withValues(alpha: 0.8),
+                                          color: Colors.black.withValues(alpha: 0.4),
                                           fontSize: 14,
                                         ),
                                       ),
-                                    ),
-                                  );
-                                }
-                              });
-                            },
-                          );
-                        } else {
-                          return GridView.builder(
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
-                              crossAxisSpacing: 15,
-                              mainAxisSpacing: 15,
-                              mainAxisExtent: 40,
-                            ),
-                            shrinkWrap: true,
-                            padding: EdgeInsets.zero,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: tables.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withValues(alpha: 0.05),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              );
-                            },
-                          );
-                        }
-                      },
+                                    );
+                                  } else {
+                                    return InkWell(
+                                      onTap: () {
+                                        selectedTable.value = tables[index];
+                                      },
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: selectedTable.value == tables[index] ? selectedOptionColor : surfaceColor,
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Text(
+                                          tables[index],
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.black.withValues(alpha: 0.8),
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                });
+                              },
+                            );
+                          } else {
+                            return GridView.builder(
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 4,
+                                crossAxisSpacing: 15,
+                                mainAxisSpacing: 15,
+                                mainAxisExtent: 40,
+                              ),
+                              shrinkWrap: true,
+                              padding: EdgeInsets.zero,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: tables.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withValues(alpha: 0.05),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                        },
+                      ),
                     ),
-                  ),
+                  if (deliveryPlace.value == 'Office')
+                    Padding(
+                      padding: EdgeInsets.only(top: 15, left: 15, right: 15),
+                      child: Text(
+                        'Select office',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ),
+                  if (deliveryPlace.value == 'Office')
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15, top: 15),
+                      child: PopupMenuButton(
+                        elevation: 0,
+                        color: buttonColor,
+                        offset: const Offset(0, 55),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: filledTextFieldColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  office.value,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: buttonColor,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        onSelected: (String? value) {
+                          setState(() {
+                            office.value = value!;
+                          });
+                        },
+                        itemBuilder: (BuildContext context) {
+                          return offices.map<PopupMenuItem<String>>((String value) {
+                            return PopupMenuItem(
+                              value: value,
+                              child: SizedBox(
+                                width: 200,
+                                child: Text(
+                                  value,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList();
+                        },
+                      ),
+                    ),
                 ],
               ),
             ),
           ),
           Obx(() {
-            if (selectedTable.isEmpty) {
+            if (selectedTable.isEmpty && deliveryPlace.value == 'Table') {
               return Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
                 child: Container(
@@ -416,26 +538,49 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       if (memory.containsKey('Order ID')) {
                         await messageBox();
                       } else {
-                        await orderCollection.add({
-                          'Items': cartController.cartItems,
-                          'Table': selectedTable.value,
-                          'Time': FieldValue.serverTimestamp(),
-                          'Total Bill': totalBill!,
-                          'Status': 'Pending',
-                          'Customer ID': currentUser,
-                        }).then((value) async {
-                          DocumentSnapshot orderSnapshot = await value.get();
-                          await memory.setString('Order ID', orderSnapshot.id);
-                          orderController.orderedItems.value = orderSnapshot['Items'];
-                          orderController.orderTime = orderSnapshot['Time'].toDate();
-                          orderController.table.value = orderSnapshot['Table'];
-                          orderController.status.value = orderSnapshot['Status'];
-                          orderController.totalBill?.value = totalBill!;
-                          orderController.orderId.value = orderSnapshot.id;
-                          cartController.cartItems.clear();
-                          Get.offAll(() => HomeScreen());
-                          orderTracking(orderSnapshot.id);
-                        });
+                        if (deliveryPlace.value == 'Table') {
+                          await orderCollection.add({
+                            'Items': cartController.cartItems,
+                            'Table': selectedTable.value,
+                            'Time': FieldValue.serverTimestamp(),
+                            'Total Bill': totalBill!,
+                            'Status': 'Pending',
+                            'Customer ID': currentUser,
+                          }).then((value) async {
+                            DocumentSnapshot orderSnapshot = await value.get();
+                            await memory.setString('Order ID', orderSnapshot.id);
+                            orderController.orderedItems.value = orderSnapshot['Items'];
+                            orderController.orderTime = orderSnapshot['Time'].toDate();
+                            orderController.table.value = orderSnapshot['Table'];
+                            orderController.status.value = orderSnapshot['Status'];
+                            orderController.totalBill?.value = totalBill!;
+                            orderController.orderId.value = orderSnapshot.id;
+                            cartController.cartItems.clear();
+                            Get.offAll(() => HomeScreen());
+                            orderTracking(orderSnapshot.id);
+                          });
+                        } else if (deliveryPlace.value == 'Office') {
+                          await orderCollection.add({
+                            'Items': cartController.cartItems,
+                            'Table': office.value,
+                            'Time': FieldValue.serverTimestamp(),
+                            'Total Bill': totalBill!,
+                            'Status': 'Pending',
+                            'Customer ID': currentUser,
+                          }).then((value) async {
+                            DocumentSnapshot orderSnapshot = await value.get();
+                            await memory.setString('Order ID', orderSnapshot.id);
+                            orderController.orderedItems.value = orderSnapshot['Items'];
+                            orderController.orderTime = orderSnapshot['Time'].toDate();
+                            orderController.table.value = orderSnapshot['Table'];
+                            orderController.status.value = orderSnapshot['Status'];
+                            orderController.totalBill?.value = totalBill!;
+                            orderController.orderId.value = orderSnapshot.id;
+                            cartController.cartItems.clear();
+                            Get.offAll(() => HomeScreen());
+                            orderTracking(orderSnapshot.id);
+                          });
+                        }
                       }
                       isLoading.value = false;
                     },

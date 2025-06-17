@@ -161,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: InputDecoration(
                       filled: true,
                       isCollapsed: true,
-                      hintText: 'Enter Username or E-mail',
+                      hintText: 'Enter E-mail',
                       fillColor: filledTextFieldColor,
                       contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
                       hintStyle: TextStyle(

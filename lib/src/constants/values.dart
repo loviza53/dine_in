@@ -2,6 +2,8 @@ List<String> categories = ['Coffee', 'Dark', 'Sweet', 'Breakfast', 'Smoothies', 
 
 List<String> sizes = ['Small', 'Medium', 'Large'];
 
+List<String> userTypes = ['Student', 'Professor'];
+
 List<String> tables = [
   'Sargodha',
   'Sahiwal',
@@ -16,3 +18,11 @@ List<String> tables = [
   'Karachi',
   'Rawalpindi',
 ];
+
+List<String> offices = [
+  'Office 01',
+  'Office 02',
+  'Office 03',
+  'Office 04',
+];
+

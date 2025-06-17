@@ -1,5 +1,6 @@
 import 'package:dine_in/src/app/authentications/signup/account_email.dart';
 import 'package:dine_in/src/constants/colors.dart';
+import 'package:dine_in/src/constants/values.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,6 +13,7 @@ class AccountName extends StatefulWidget {
 
 class _AccountNameState extends State<AccountName> {
   RxBool isButtonDisabled = true.obs;
+  RxString userType = userTypes.first.obs;
 
   TextEditingController fullNameController = TextEditingController();
 
@@ -150,6 +152,63 @@ class _AccountNameState extends State<AccountName> {
                       }
                     },
                   ),
+                  const SizedBox(height: 20),
+                  PopupMenuButton(
+                    elevation: 0,
+                    color: buttonColor,
+                    offset: const Offset(0, 55),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: filledTextFieldColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              userType.value,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                            const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: buttonColor,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    onSelected: (String? value) {
+                      setState(() {
+                        userType.value = value!;
+                      });
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return userTypes.map<PopupMenuItem<String>>((String value) {
+                        return PopupMenuItem(
+                          value: value,
+                          child: SizedBox(
+                            width: 200,
+                            child: Text(
+                              value,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList();
+                    },
+                  ),
                 ],
               ),
             ),
@@ -179,7 +238,7 @@ class _AccountNameState extends State<AccountName> {
                       )
                     : ElevatedButton(
                         onPressed: () {
-                          Get.to(() => AccountEmail(fullName: fullNameController.text.trim()));
+                          Get.to(() => AccountEmail(fullName: fullNameController.text.trim(), userType: userType.value));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: buttonColor,

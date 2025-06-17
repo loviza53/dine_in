@@ -5,9 +5,14 @@ import 'package:get/get.dart';
 import 'account_password.dart';
 
 class AccountEmail extends StatefulWidget {
-  const AccountEmail({super.key, required this.fullName});
+  const AccountEmail({
+    super.key,
+    required this.fullName,
+    required this.userType,
+  });
 
   final String fullName;
+  final String userType;
 
   @override
   State<AccountEmail> createState() => _AccountEmailState();
@@ -254,7 +259,13 @@ class _AccountEmailState extends State<AccountEmail> {
                                   isButtonDisabled.value = true;
                                 } else {
                                   emailAlreadyExists.value = false;
-                                  Get.to(() => AccountPassword(email: emailController.text.trim(), fullName: widget.fullName));
+                                  Get.to(
+                                    () => AccountPassword(
+                                      email: emailController.text.trim(),
+                                      fullName: widget.fullName,
+                                      userType: widget.userType,
+                                    ),
+                                  );
                                 }
                               });
                               isLoading.value = false;

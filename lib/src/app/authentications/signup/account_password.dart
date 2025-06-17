@@ -11,10 +11,12 @@ class AccountPassword extends StatefulWidget {
     super.key,
     required this.email,
     required this.fullName,
+    required this.userType,
   });
 
-  final String fullName;
   final String email;
+  final String fullName;
+  final String userType;
 
   @override
   State<AccountPassword> createState() => _AccountPasswordState();
@@ -268,6 +270,7 @@ class _AccountPasswordState extends State<AccountPassword> {
                               final userData = {
                                 'Full Name': widget.fullName,
                                 'Email': widget.email,
+                                'User Type': widget.userType,
                                 'Password': passwordController.text.trim(),
                               };
                               await FirebaseAuth.instance

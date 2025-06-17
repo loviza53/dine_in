@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dine_in/src/app/authentications/authentication_home/authentication_home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,6 +15,8 @@ class Setting extends StatefulWidget {
 }
 
 class _SettingState extends State<Setting> {
+  final currentUser = FirebaseAuth.instance.currentUser!.uid;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,6 +86,44 @@ class _SettingState extends State<Setting> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15),
+                      child: StreamBuilder(
+                        stream: FirebaseFirestore.instance.collection('Users').doc(currentUser).snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: secondaryColor,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'Monthly Bill',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${snapshot.data!['Monthly Bill'].toString()} PKR',
+                                    style: TextStyle(
+                                      fontSize: 38,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            return SizedBox();
+                          }
+                        },
+                      ),
+                    ),
                     InkWell(
                       onTap: () => Get.to(() => const AdminHomeScreen()),
                       child: Container(

@@ -92,6 +92,10 @@ class _SettingState extends State<Setting> {
                         stream: FirebaseFirestore.instance.collection('Users').doc(currentUser).snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
+                            int monthlyBill = 0;
+                            if (snapshot.data!.data()!.containsKey('Monthly Bill')) {
+                              monthlyBill = snapshot.data!['Monthly Bill'];
+                            }
                             return Container(
                               width: double.infinity,
                               padding: EdgeInsets.all(15),
@@ -109,7 +113,7 @@ class _SettingState extends State<Setting> {
                                     ),
                                   ),
                                   Text(
-                                    '${snapshot.data!['Monthly Bill'].toString()} PKR',
+                                    '${monthlyBill.toString()} PKR',
                                     style: TextStyle(
                                       fontSize: 32,
                                       fontWeight: FontWeight.w300,

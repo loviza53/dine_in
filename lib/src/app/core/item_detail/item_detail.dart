@@ -33,11 +33,13 @@ class _ItemDetailState extends State<ItemDetail> {
   String sugar = '1 Cube';
   int quantity = 1;
   int? totalPrice;
+  RxInt price = 0.obs;
 
   final CartController controller = Get.find<CartController>();
 
   @override
   void initState() {
+    price.value = int.parse(widget.price);
     totalPrice = int.tryParse(widget.price);
     super.initState();
   }
@@ -180,10 +182,12 @@ class _ItemDetailState extends State<ItemDetail> {
                                     fontSize: 18,
                                   ),
                                 ),
-                                Text(
-                                  "PKR ${widget.price}",
-                                  style: TextStyle(
-                                    fontSize: 20,
+                                Obx(
+                                  () => Text(
+                                    "PKR ${price.value}",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -202,7 +206,7 @@ class _ItemDetailState extends State<ItemDetail> {
                                       setState(() {
                                         if (quantity > 1) {
                                           quantity--;
-                                          totalPrice = totalPrice! - int.parse(widget.price);
+                                          totalPrice = price.value * quantity;
                                         }
                                       });
                                     },
@@ -223,7 +227,7 @@ class _ItemDetailState extends State<ItemDetail> {
                                     onTap: () {
                                       setState(() {
                                         quantity++;
-                                        totalPrice = totalPrice! + int.parse(widget.price);
+                                        totalPrice = price.value * quantity;
                                       });
                                     },
                                     borderRadius: BorderRadius.circular(20),
@@ -277,6 +281,14 @@ class _ItemDetailState extends State<ItemDetail> {
                                     onTap: () {
                                       setState(() {
                                         size = sizes[index];
+                                        if (size == 'Small') {
+                                          price.value = int.tryParse(widget.price)!;
+                                        } else if (size == 'Medium') {
+                                          price.value = ((int.tryParse(widget.price))! / 100 * 120).toInt();
+                                        } else if (size == 'Large') {
+                                          price.value = ((int.tryParse(widget.price))! / 100 * 140).toInt();
+                                        }
+                                        totalPrice = price.value * quantity;
                                       });
                                     },
                                     child: Icon(
@@ -453,7 +465,7 @@ class _ItemDetailState extends State<ItemDetail> {
                           offset: const Offset(4, 4),
                         ),
                       ],
-                      color: buttonColor,
+                      color: Colors.black,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Center(

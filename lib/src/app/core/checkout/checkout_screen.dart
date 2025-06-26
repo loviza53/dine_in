@@ -29,7 +29,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   final CartController cartController = Get.find<CartController>();
   final OrderController orderController = Get.find<OrderController>();
 
-  final currentUser = FirebaseAuth.instance.currentUser!.uid;
+  final currentUser = FirebaseAuth.instance.currentUser?.uid;
   final orderCollection = FirebaseFirestore.instance.collection('Orders');
   final userCollection = FirebaseFirestore.instance.collection('Users');
 
@@ -112,6 +112,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                   ),
                 ),
+                Center(
+                  child: Text(
+                    'Payment Method',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -120,30 +130,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 50,
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                    decoration: BoxDecoration(
-                      color: surfaceColor,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: accentColor,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: Text(
-                        'Payment Method',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
                   Padding(
                     padding: const EdgeInsets.all(15),
                     child: Container(
@@ -487,7 +473,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       'Place Order',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.white,
+                        color: Colors.black.withValues(alpha: 0.4),
                       ),
                     ),
                   ),

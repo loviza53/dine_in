@@ -68,6 +68,16 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                 ),
+                Center(
+                  child: Text(
+                    'Order Summary',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -75,30 +85,6 @@ class _CartScreenState extends State<CartScreen> {
             Expanded(
               child: Column(
                 children: [
-                  Container(
-                    height: 50,
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                    decoration: BoxDecoration(
-                      color: surfaceColor,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: accentColor,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: Text(
-                        'Order Summary',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
                   Padding(
                     padding: const EdgeInsets.all(15),
                     child: ListView.builder(
@@ -308,6 +294,14 @@ class _CartScreenState extends State<CartScreen> {
                   height: 45,
                   width: double.infinity,
                   decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.brown.withValues(alpha: 0.15),
+                        spreadRadius: 0,
+                        blurRadius: 6,
+                        offset: const Offset(4, 4),
+                      ),
+                    ],
                     color: surfaceColor,
                     borderRadius: BorderRadius.circular(10),
                   ),

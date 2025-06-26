@@ -15,7 +15,7 @@ class Setting extends StatefulWidget {
 }
 
 class _SettingState extends State<Setting> {
-  final currentUser = FirebaseAuth.instance.currentUser!.uid;
+  final currentUser = FirebaseAuth.instance.currentUser?.uid;
 
   @override
   Widget build(BuildContext context) {

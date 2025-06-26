@@ -454,8 +454,9 @@ class _ItemDetailState extends State<ItemDetail> {
                   },
                   borderRadius: BorderRadius.circular(10),
                   child: Container(
-                    height: 45,
+                    height: 50,
                     width: double.infinity,
+                    margin: EdgeInsets.only(bottom: 15),
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
@@ -472,7 +473,7 @@ class _ItemDetailState extends State<ItemDetail> {
                       child: Text(
                         'Add to cart',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18,
                           color: Colors.white,
                         ),
                       ),

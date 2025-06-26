@@ -242,14 +242,14 @@ class _ItemDetailState extends State<ItemDetail> {
                           ],
                         ),
                         SizedBox(height: 20),
-                        if (widget.category == 'Breakfast')
+                        if (widget.category == 'Snacks')
                           Text(
                             widget.description,
                             style: TextStyle(
                               fontSize: 14,
                             ),
                           ),
-                        if (widget.category != 'Breakfast')
+                        if (widget.category != 'Snacks')
                           Padding(
                             padding: const EdgeInsets.only(top: 20, bottom: 5),
                             child: Text(
@@ -259,7 +259,7 @@ class _ItemDetailState extends State<ItemDetail> {
                               ),
                             ),
                           ),
-                        if (widget.category != 'Breakfast')
+                        if (widget.category != 'Snacks')
                           SizedBox(
                             height: 60,
                             child: ListView.builder(
@@ -301,7 +301,7 @@ class _ItemDetailState extends State<ItemDetail> {
                               },
                             ),
                           ),
-                        if (widget.category != 'Breakfast')
+                        if (widget.category != 'Snacks')
                           Padding(
                             padding: const EdgeInsets.only(top: 20, bottom: 5),
                             child: Text(
@@ -311,7 +311,7 @@ class _ItemDetailState extends State<ItemDetail> {
                               ),
                             ),
                           ),
-                        if (widget.category != 'Breakfast')
+                        if (widget.category != 'Snacks')
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,4 +1,4 @@
-List<String> categories = ['Coffee', 'Dark', 'Sweet', 'Breakfast', 'Smoothies', 'Chillers'];
+List<String> categories = ['Chillers', 'Dark Coffee', 'Iced Coffee', 'Smoothies', 'Snacks', 'Sweet Coffee'];
 
 List<String> sizes = ['Small', 'Medium', 'Large'];
 

@@ -82,7 +82,7 @@ class _AccountPasswordState extends State<AccountPassword> {
                         ),
                       ),
                       Text(
-                        'Step 4 of 4',
+                        'Step 3 of 3',
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.5),
                           fontSize: 12,

@@ -77,7 +77,7 @@ class _AccountEmailState extends State<AccountEmail> {
                         ),
                       ),
                       Text(
-                        'Step 3 of 4',
+                        'Step 2 of 3',
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.5),
                           fontSize: 12,

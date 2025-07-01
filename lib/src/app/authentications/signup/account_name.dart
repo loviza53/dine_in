@@ -68,7 +68,7 @@ class _AccountNameState extends State<AccountName> {
                         ),
                       ),
                       Text(
-                        'Step 1 of 4',
+                        'Step 1 of 3',
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.5),
                           fontSize: 12,

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dine_in/src/app/authentications/authentication_home/authentication_home_screen.dart';
+import 'package:dine_in/src/app/authentications/login/login_screen.dart';
 import 'package:dine_in/src/app/authentications/verify_email/verify_email_screen.dart';
 import 'package:dine_in/src/constants/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -285,7 +285,7 @@ class _AccountPasswordState extends State<AccountPassword> {
                                 if (user != null) {
                                   Get.offAll(() => const VerifyEmailScreen());
                                 } else {
-                                  Get.offAll(() => const AuthenticationHomeScreen());
+                                  Get.offAll(() => const LoginScreen());
                                 }
                               });
                               isLoading.value = false;

@@ -1,4 +1,5 @@
 import 'package:dine_in/src/app/authentications/splash_screen/splash_screen.dart';
+import 'package:dine_in/src/app/core/home/home_screen.dart';
 import 'package:get/get.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: accentColor),
         useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      home: const HomeScreen(),
     );
   }
 }

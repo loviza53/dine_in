@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dine_in/src/app/authentications/signup/account_name.dart';
 import 'package:dine_in/src/app/authentications/verify_email/verify_email_screen.dart';
-import 'package:dine_in/src/app/core/home/home_screen.dart';
 import 'package:dine_in/src/constants/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.2),
+                color: Colors.black.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Row(
@@ -47,12 +47,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 45,
                     width: 45,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.4),
+                      color: Colors.white.withValues(alpha: 0.4),
                       borderRadius: BorderRadius.circular(25),
                     ),
                     child: Icon(
                       Icons.error_rounded,
-                      color: Colors.red.withOpacity(0.6),
+                      color: Colors.red.withValues(alpha: 0.6),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -282,6 +282,29 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
                   ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Don\'t have an account? ',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () => Get.to(() => const AccountName()),
+                        child: Text(
+                          'Sign up',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: buttonColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -372,7 +395,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               User? currentUser = FirebaseAuth.instance.currentUser;
                               if (currentUser != null) {
                                 if (currentUser.emailVerified) {
-                                  Get.offAll(() => const HomeScreen());
+                                  Get.back();
                                 } else {
                                   Get.offAll(() => const VerifyEmailScreen());
                                 }

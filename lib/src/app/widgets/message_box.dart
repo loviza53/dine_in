@@ -55,8 +55,12 @@ class _MessageBoxState extends State<MessageBox> {
                 alignment: Alignment.center,
                 padding: EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
-                  color: Colors.red,
+                  color: buttonColor,
                   borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: buttonColor,
+                    width: 2,
+                  ),
                 ),
                 child: Text(
                   'Close',

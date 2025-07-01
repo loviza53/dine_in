@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dine_in/src/app/authentications/authentication_home/authentication_home_screen.dart';
+import 'package:dine_in/src/app/core/home/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -86,48 +86,49 @@ class _SettingState extends State<Setting> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: StreamBuilder(
-                        stream: FirebaseFirestore.instance.collection('Users').doc(currentUser).snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            int monthlyBill = 0;
-                            if (snapshot.data!.data()!.containsKey('Monthly Bill')) {
-                              monthlyBill = snapshot.data!['Monthly Bill'];
+                    if (currentUser != null)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15, right: 15),
+                        child: StreamBuilder(
+                          stream: FirebaseFirestore.instance.collection('Users').doc(currentUser).snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              int monthlyBill = 0;
+                              if (snapshot.data!.data()!.containsKey('Monthly Bill')) {
+                                monthlyBill = snapshot.data!['Monthly Bill'];
+                              }
+                              return Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                  color: secondaryColor,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'Monthly Bill',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      '${monthlyBill.toString()} PKR',
+                                      style: TextStyle(
+                                        fontSize: 32,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              return SizedBox();
                             }
-                            return Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                color: secondaryColor,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'Monthly Bill',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    '${monthlyBill.toString()} PKR',
-                                    style: TextStyle(
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          } else {
-                            return SizedBox();
-                          }
-                        },
+                          },
+                        ),
                       ),
-                    ),
                     InkWell(
                       onTap: () => Get.to(() => const AdminHomeScreen()),
                       child: Container(
@@ -152,8 +153,9 @@ class _SettingState extends State<Setting> {
                         ),
                       ),
                     ),
+                    if (currentUser != null)
                     InkWell(
-                      onTap: () async => await FirebaseAuth.instance.signOut().then((value) => Get.offAll(AuthenticationHomeScreen())),
+                      onTap: () async => await FirebaseAuth.instance.signOut().then((value) => Get.offAll(HomeScreen())),
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                         child: Row(

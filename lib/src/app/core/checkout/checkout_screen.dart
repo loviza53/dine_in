@@ -26,6 +26,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   RxBool payLater = false.obs;
   RxString deliveryPlace = 'Table'.obs;
   RxString userType = userTypes.first.obs;
+  RxString table = tables.first.obs;
   RxString office = offices.first.obs;
 
   final CartController cartController = Get.find<CartController>();
@@ -63,8 +64,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
+  Future<void> loadTableName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      table.value = prefs.getString('table')!;
+    });
+  }
+
   @override
   void initState() {
+    loadTableName();
     totalBill = cartController.cartItems.map((e) => e['Total Price']).reduce((value, element) => value + element);
     userCollection.doc(currentUser).get().then((userSnapshot) {
       setState(() {
@@ -670,7 +679,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       } else {
                         await orderCollection.add({
                           'Items': cartController.cartItems,
-                          'Table': tables.first,
+                          'Table': table.value,
                           'Time': FieldValue.serverTimestamp(),
                           'Total Bill': totalBill!,
                           'Status': 'Pending',

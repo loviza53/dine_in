@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dine_in/src/app/core/home/home_screen.dart';
+import 'package:dine_in/src/constants/values.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:dine_in/src/constants/colors.dart';
 import 'package:dine_in/src/app/admin/admin_home/admin_home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Setting extends StatefulWidget {
   const Setting({super.key});
@@ -15,7 +17,21 @@ class Setting extends StatefulWidget {
 }
 
 class _SettingState extends State<Setting> {
+  RxString table = tables.first.obs;
   final currentUser = FirebaseAuth.instance.currentUser?.uid;
+
+  @override
+  void initState() {
+    loadTableName();
+    super.initState();
+  }
+
+  Future<void> loadTableName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      table.value = prefs.getString('table')!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,6 +145,67 @@ class _SettingState extends State<Setting> {
                           },
                         ),
                       ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 10, top: 10),
+                      child: PopupMenuButton(
+                        elevation: 0,
+                        color: buttonColor,
+                        offset: const Offset(0, 55),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  table.value,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: buttonColor,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        onSelected: (String? value) async {
+                          setState(() {
+                            table.value = value!;
+                          });
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          await prefs.setString('table', value!);
+                        },
+                        itemBuilder: (BuildContext context) {
+                          return tables.map<PopupMenuItem<String>>((String value) {
+                            return PopupMenuItem(
+                              value: value,
+                              child: SizedBox(
+                                width: 200,
+                                child: Text(
+                                  value,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList();
+                        },
+                      ),
+                    ),
                     InkWell(
                       onTap: () => Get.to(() => const AdminHomeScreen()),
                       child: Container(

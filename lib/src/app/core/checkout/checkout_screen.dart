@@ -128,7 +128,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 Positioned(
                   right: 0,
                   child: InkWell(
-                    onTap: () => Get.to(() => LoginScreen()),
+                    onTap: () => Get.off(() => LoginScreen()),
                     borderRadius: BorderRadius.circular(20),
                     child: Text(
                       'Login',
@@ -633,7 +633,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         SizedBox(width: 10),
                                         Expanded(
                                           child: InkWell(
-                                            onTap: () => Get.off(() => LoginScreen()),
+                                            onTap: () async {
+                                              Get.back();
+                                              Get.off(() => LoginScreen());
+                                            },
                                             borderRadius: BorderRadius.circular(10),
                                             child: Container(
                                               alignment: Alignment.center,

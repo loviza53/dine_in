@@ -1,4 +1,5 @@
 import 'package:dine_in/src/app/admin/add_staff/add_staff_screen.dart';
+import 'package:dine_in/src/app/admin/manage_customers/manage_customers_screen.dart';
 import 'package:dine_in/src/app/admin/manage_items/manage_items_screen.dart';
 import 'package:dine_in/src/app/admin/staff_members/staff_members_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -250,7 +251,34 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                         ),
                         SizedBox(width: 15),
                         Expanded(
-                          child: SizedBox(),
+                          child: InkWell(
+                            onTap: () => Get.to(() => const ManageCustomersScreen()),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                              decoration: BoxDecoration(
+                                color: secondaryColor,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.person,
+                                    size: 40,
+                                    color: Colors.black,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    'Customers',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),

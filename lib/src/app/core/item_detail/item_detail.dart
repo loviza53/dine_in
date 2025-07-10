@@ -242,14 +242,14 @@ class _ItemDetailState extends State<ItemDetail> {
                           ],
                         ),
                         SizedBox(height: 20),
-                        if (widget.category == 'Snacks')
+                        if (widget.category == 'Snacks' || widget.category == 'Burger' || widget.category == 'Pizza' || widget.category == 'Pasta')
                           Text(
                             widget.description,
                             style: TextStyle(
                               fontSize: 14,
                             ),
                           ),
-                        if (widget.category != 'Snacks')
+                        if (widget.category != 'Snacks' && widget.category != 'Burger' && widget.category != 'Pizza' && widget.category != 'Pasta')
                           Padding(
                             padding: const EdgeInsets.only(top: 20, bottom: 5),
                             child: Text(
@@ -259,7 +259,7 @@ class _ItemDetailState extends State<ItemDetail> {
                               ),
                             ),
                           ),
-                        if (widget.category != 'Snacks')
+                        if (widget.category != 'Snacks' && widget.category != 'Burger' && widget.category != 'Pizza' && widget.category != 'Pasta')
                           SizedBox(
                             height: 60,
                             child: ListView.builder(
@@ -301,7 +301,7 @@ class _ItemDetailState extends State<ItemDetail> {
                               },
                             ),
                           ),
-                        if (widget.category != 'Snacks')
+                        if (widget.category != 'Snacks' && widget.category != 'Burger' && widget.category != 'Pizza' && widget.category != 'Pasta')
                           Padding(
                             padding: const EdgeInsets.only(top: 20, bottom: 5),
                             child: Text(
@@ -311,7 +311,7 @@ class _ItemDetailState extends State<ItemDetail> {
                               ),
                             ),
                           ),
-                        if (widget.category != 'Snacks')
+                        if (widget.category != 'Snacks' && widget.category != 'Burger' && widget.category != 'Pizza' && widget.category != 'Pasta')
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,

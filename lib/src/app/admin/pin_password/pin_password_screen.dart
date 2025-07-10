@@ -127,10 +127,13 @@ class _PinPasswordScreenState extends State<PinPasswordScreen> {
                   ),
                 ),
                 onChanged: (value) {
+                  subTitle.value = 'Enter Password';
                   if (value.length == 6) {
                     if (value == '123456') {
                       Get.to(() => AdminHomeScreen());
-                    } else if (value != '123456') {}
+                    } else if (value != '123456') {
+                      subTitle.value = 'Incorrect Password';
+                    }
                   }
                 },
               ),
@@ -141,6 +144,7 @@ class _PinPasswordScreenState extends State<PinPasswordScreen> {
               subTitle.value,
               style: TextStyle(
                 fontSize: 16,
+                color: subTitle.value == 'Incorrect Password' ? Colors.red : Colors.black,
               ),
             ),
           ),

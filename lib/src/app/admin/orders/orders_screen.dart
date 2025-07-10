@@ -109,36 +109,37 @@ class _OrdersScreenState extends State<OrdersScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  StreamBuilder(
-                                    stream: userCollection.doc(orderSnapshot['Customer ID']).snapshots(),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        final userSnapshot = snapshot.data!;
-                                        return Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              userSnapshot['Full Name'],
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w300,
+                                  if (orderSnapshot.data().containsKey('Customer ID'))
+                                    StreamBuilder(
+                                      stream: userCollection.doc(orderSnapshot['Customer ID']).snapshots(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          final userSnapshot = snapshot.data!;
+                                          return Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                userSnapshot['Full Name'],
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w300,
+                                                ),
                                               ),
-                                            ),
-                                            Text(
-                                              'ID: ${userSnapshot.id}',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.black.withValues(alpha: 0.5),
-                                                fontWeight: FontWeight.w400,
+                                              Text(
+                                                'ID: ${userSnapshot.id}',
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black.withValues(alpha: 0.5),
+                                                  fontWeight: FontWeight.w400,
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        );
-                                      } else {
-                                        return SizedBox();
-                                      }
-                                    },
-                                  ),
+                                            ],
+                                          );
+                                        } else {
+                                          return SizedBox();
+                                        }
+                                      },
+                                    ),
                                   SizedBox(height: 10),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -109,7 +109,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  if (orderSnapshot.data().containsKey('Customer ID'))
+                                  if (orderSnapshot['Customer ID'] != null)
                                     StreamBuilder(
                                       stream: userCollection.doc(orderSnapshot['Customer ID']).snapshots(),
                                       builder: (context, snapshot) {

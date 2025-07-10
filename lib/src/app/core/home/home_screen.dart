@@ -181,44 +181,44 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Container(
-                        height: 60,
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                        child: InkWell(
-                          onTap: () {},
-                          borderRadius: BorderRadius.circular(50),
-                          child: Container(
-                            height: 40,
-                            width: double.infinity,
-                            padding: const EdgeInsets.only(left: 20, right: 7.5),
-                            decoration: BoxDecoration(
-                              color: secondaryColor,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.search_rounded,
-                                  color: Colors.black.withValues(alpha: 0.6),
-                                ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Text(
-                                    'Search menu item or specials...',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black.withValues(alpha: 0.6),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
+                      // Container(
+                      //   height: 60,
+                      //   width: double.infinity,
+                      //   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                      //   child: InkWell(
+                      //     onTap: () {},
+                      //     borderRadius: BorderRadius.circular(50),
+                      //     child: Container(
+                      //       height: 40,
+                      //       width: double.infinity,
+                      //       padding: const EdgeInsets.only(left: 20, right: 7.5),
+                      //       decoration: BoxDecoration(
+                      //         color: secondaryColor,
+                      //         borderRadius: BorderRadius.circular(50),
+                      //       ),
+                      //       child: Row(
+                      //         children: [
+                      //           Icon(
+                      //             Icons.search_rounded,
+                      //             color: Colors.black.withValues(alpha: 0.6),
+                      //           ),
+                      //           const SizedBox(width: 10),
+                      //           Expanded(
+                      //             child: Text(
+                      //               'Search menu item or specials...',
+                      //               style: TextStyle(
+                      //                 fontSize: 16,
+                      //                 fontWeight: FontWeight.w400,
+                      //                 color: Colors.black.withValues(alpha: 0.6),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      Padding( 
                         padding: const EdgeInsets.all(15),
                         child: GridView.builder(
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

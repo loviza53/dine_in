@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dine_in/src/app/admin/pin_password/pin_password_screen.dart';
 import 'package:dine_in/src/app/core/home/home_screen.dart';
 import 'package:dine_in/src/constants/values.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -207,7 +208,7 @@ class _SettingState extends State<Setting> {
                       ),
                     ),
                     InkWell(
-                      onTap: () => Get.to(() => const AdminHomeScreen()),
+                      onTap: () => Get.to(() => const PinPasswordScreen()),
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                         child: Row(

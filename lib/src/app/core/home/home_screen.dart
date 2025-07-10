@@ -352,15 +352,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                             Expanded(
                                               child: Padding(
                                                 padding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
-                                                child: Text(
-                                                  itemSnapshot['Item Name'],
-                                                  maxLines: 2,
-                                                  textAlign: TextAlign.center,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  style: const TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w300,
-                                                  ),
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      'PKR ${itemSnapshot['Price']}',
+                                                      textAlign: TextAlign.center,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      itemSnapshot['Item Name'],
+                                                      maxLines: 1,
+                                                      textAlign: TextAlign.center,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight: FontWeight.w300,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ),
@@ -431,15 +444,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                               Expanded(
                                                 child: Padding(
                                                   padding: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
-                                                  child: Text(
-                                                    itemSnapshot['Item Name'],
-                                                    maxLines: 2,
-                                                    textAlign: TextAlign.center,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w300,
-                                                    ),
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        'PKR ${itemSnapshot['Price']}',
+                                                        textAlign: TextAlign.center,
+                                                        overflow: TextOverflow.ellipsis,
+                                                        style: const TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        itemSnapshot['Item Name'],
+                                                        maxLines: 1,
+                                                        textAlign: TextAlign.center,
+                                                        overflow: TextOverflow.ellipsis,
+                                                        style: const TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.w300,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                               ),

@@ -130,12 +130,21 @@ class _PinPasswordScreenState extends State<PinPasswordScreen> {
                   subTitle.value = 'Enter Password';
                   if (value.length == 6) {
                     if (value == '123456') {
-                      Get.to(() => AdminHomeScreen());
+                      Get.off(() => AdminHomeScreen());
                     } else if (value != '123456') {
                       subTitle.value = 'Incorrect Password';
                     }
                   }
                 },
+                onEditingComplete: () {
+                  if (pinController.text.length == 6) {
+                    if (pinController.text == '123456') {
+                      Get.off(() => AdminHomeScreen());
+                    } else if (pinController.text != '123456') {
+                      subTitle.value = 'Incorrect Password';
+                    }
+                  }
+                }
               ),
             ),
           ),

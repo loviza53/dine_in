@@ -109,6 +109,15 @@ class _ManageCustomersScreenState extends State<ManageCustomersScreen> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
+                                    Text(
+                                      'ID: ${userSnapshot.id}',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.black.withValues(alpha: 0.5),
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
                                     if (userSnapshot.data().containsKey('Monthly Bill'))
                                       Text(
                                         'Bill: PKR ${userSnapshot['Monthly Bill']}',
@@ -230,8 +239,6 @@ class _ManageCustomersScreenState extends State<ManageCustomersScreen> {
                                               );
                                             },
                                           );
-
-
                                         },
                                         borderRadius: BorderRadius.circular(10),
                                         child: Container(
